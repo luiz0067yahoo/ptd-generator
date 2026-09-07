@@ -159,3 +159,26 @@ export function getOfflineSuggestion(stepId, cursoName, ucName) {
       return {};
   }
 }
+
+export function generateFullInstitutionalPtd(cursoName, ucName, chUc, instrutorName, formatoName) {
+  const c = cursoName || "Técnico em Desenvolvimento de Sistemas";
+  const u = ucName || "Desenvolver Aplicações Web";
+  const ch = chUc || "80 Horas";
+  const inst = instrutorName || "Docente Senac";
+  const fmt = formatoName || "Presencial";
+
+  let full = {
+    curso: c,
+    uc: u,
+    ch_uc: ch,
+    instrutor: inst,
+    formato: fmt
+  };
+
+  for (let step = 3; step <= 12; step++) {
+    const part = getOfflineSuggestion(step, c, u);
+    full = { ...full, ...part };
+  }
+
+  return full;
+}

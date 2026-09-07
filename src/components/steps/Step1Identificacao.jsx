@@ -1,7 +1,7 @@
 import React from 'react';
-import { Info } from 'lucide-react';
+import { Info, Sparkles } from 'lucide-react';
 
-export default function Step1Identificacao({ data, onChange }) {
+export default function Step1Identificacao({ data, onChange, onOpenFullAiModal }) {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3 mb-2">
@@ -12,6 +12,27 @@ export default function Step1Identificacao({ data, onChange }) {
           <h3 className="text-xl font-heading font-bold text-slate-900">Identificação Básica</h3>
           <p className="text-sm text-slate-500">Informe os dados gerais do curso técnico e do corpo docente.</p>
         </div>
+      </div>
+
+      {/* Full AI PTD Assistant Card */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50/70 border border-amber-200/90 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-senac-orange text-white flex items-center justify-center flex-shrink-0 shadow">
+            <Sparkles className="w-5 h-5 text-yellow-200" />
+          </div>
+          <div>
+            <h4 className="font-heading font-bold text-sm text-slate-900">Preencher Todo o PTD com IA</h4>
+            <p className="text-xs text-slate-600">Gere todas as 12 etapas do plano pedagógico de uma única vez.</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onOpenFullAiModal}
+          className="w-full sm:w-auto px-4 py-2 bg-senac-orange hover:bg-senac-orange-hover text-white text-xs font-bold rounded-xl shadow transition flex items-center justify-center gap-2 flex-shrink-0 active:scale-95 cursor-pointer"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Gerar Tudo com IA</span>
+        </button>
       </div>
 
       <div className="bg-blue-50/70 border border-blue-100 rounded-xl p-3.5 mb-6 text-xs text-blue-900 flex items-start gap-2.5">

@@ -17,32 +17,42 @@ Este guia orienta passo a passo como gerar sua chave de API pessoal e gratuita n
 
 ## 📝 Passo a Passo Detalhado
 
-### Passo 1: Acessar o Google AI Studio
+### Passo 1: Acessar o Google AI Studio e Aceitar os Termos
 - Abra seu navegador e entre no link oficial: **[aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)**.
-- Se solicitado, faça login com qualquer conta Google comum (ex: `@gmail.com` ou conta institucional com permissão).
-- Aceite os termos de serviço do Google AI Studio se for seu primeiro acesso.
+- Faça login com sua conta Google (Gmail).
+- Se for seu primeiro acesso, marque a confirmação dos termos de uso e clique em **Continue**.
+
+![Aceite dos Termos no Google AI Studio](public/tutorial/step2_terms.png)
 
 ---
 
 ### Passo 2: Criar a Chave de API
-- Na barra lateral ou no topo da página de **API keys**, localize e clique no botão:
+- Na tela principal de **API keys**, localize o botão no canto superior direito:
   > **`+ Create API key`** (ou **Criar chave de API**)
+
+![Painel de Chaves de API do Google AI Studio](public/tutorial/step3_dashboard.png)
 
 ---
 
 ### Passo 3: Escolha do Projeto (MUITO IMPORTANTE!)
-Ao clicar para criar a chave, o Google exibirá uma janela com opções de projeto:
+Ao clicar para criar a chave, o Google exibirá a janela **"Create a new key"**:
 
 > 💡 **RECOMENDAÇÃO OBRIGATÓRIA:**
-> - Selecione a opção **"Create API key in new project"** *(Criar chave em um novo projeto)*.
-> - **Por que fazer isso?** Projetos novos criados pelo Google AI Studio recebem automaticamente a **cota gratuita oficial** (15 requisições por minuto no modelo Flash) sem exigir cartão de crédito ou faturamento. Se você vincular a um projeto antigo do Google Cloud que não possua cotas de IA habilitadas, a API responderá com o erro `429 - Quota exceeded`.
+> - Digite um nome para sua chave (ex: `Gemini API Key`).
+> - No campo **Choose an imported project**, selecione o projeto padrão ou **"Create API key in new project"**.
+> - **Por que fazer isso?** Projetos novos ou o padrão do Google AI Studio recebem automaticamente a **cota gratuita oficial** (15 requisições por minuto no modelo Flash) sem custos ou cartão de crédito. Se você vincular a um projeto antigo do Google Cloud que não possua cotas de IA habilitadas, a API responderá com o erro `429 - Quota exceeded`.
+> - Clique no botão azul **Create key**.
+
+![Janela Create a new key e escolha de projeto](public/tutorial/step4_create_modal.png)
 
 ---
 
 ### Passo 4: Copiar a Chave Gerada
-- Após alguns segundos, abrirá uma janela pop-up intitulada **"API key details"** (Detalhes da chave de API).
+- Após alguns segundos, abrirá a janela pop-up intitulada **"API key details"** (Detalhes da chave de API).
 - Você verá o campo **API Key** com o código da sua chave.
-- Clique no botão **`Copy key`** no canto inferior ou no ícone de prancheta/cópia ao lado do código.
+- Clique no botão **`Copy key`** no canto inferior ou no ícone de cópia ao lado do código.
+
+![Janela de Detalhes da Chave com botão Copy Key](public/tutorial/step5_key_details.png)
 
 ---
 
@@ -54,6 +64,8 @@ Ao clicar para criar a chave, o Google exibirá uma janela com opções de proje
    - Clique no botão azul **`Aplicar Chave`**.
 4. Uma notificação verde confirmará: *"Chave Gemini salva na sessão!"*.
 5. A bolinha de status ao lado do botão passará a ficar **verde**, indicando que a chave está ativa.
+
+![Tutorial e Configuração da Chave no Gerador de PTD](public/tutorial/step1_modal.png)
 
 ---
 

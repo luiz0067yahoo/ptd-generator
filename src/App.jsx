@@ -13,9 +13,10 @@ import Step9InstrumentosAvaliacao from './components/steps/Step9InstrumentosAval
 import Step10MarcasFormativas from './components/steps/Step10MarcasFormativas';
 import Step11MateriaisRecursos from './components/steps/Step11MateriaisRecursos';
 import Step12ReferenciasConclusao from './components/steps/Step12ReferenciasConclusao';
+import FullAiGeneratorModal from './components/FullAiGeneratorModal';
 
-import { OFFLINE_PRESETS, getOfflineSuggestion } from './services/offlineDatabase';
-import { generateWithGemini, cleanMarkdown, parseJsonSafely } from './services/geminiService';
+import { OFFLINE_PRESETS, getOfflineSuggestion, generateFullInstitutionalPtd } from './services/offlineDatabase';
+import { generateWithGemini, generateFullPtdWithGemini, cleanMarkdown, parseJsonSafely } from './services/geminiService';
 import { ArrowLeft, ArrowRight, CheckCircle2, AlertTriangle, XCircle, Info, X } from 'lucide-react';
 import './styles/wizard.css';
 
@@ -67,6 +68,8 @@ export default function App() {
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showFullAiModal, setShowFullAiModal] = useState(false);
+  const [loadingFullAi, setLoadingFullAi] = useState(false);
 
   // Autosave on change
   useEffect(() => {
@@ -93,8 +96,12 @@ export default function App() {
   };
 
   const showToast = (message, type = 'info') => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
+    const id = Date.now() + Math.random();
+    setToasts((prev) => {
+      // Remove previous identical messages and limit to max 2 active toasts
+      const filtered = prev.filter((t) => t.message !== message);
+      return [...filtered.slice(-1), { id, message, type }];
+    });
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4500);
@@ -111,12 +118,45 @@ export default function App() {
     }));
   };
 
-  const handleLoadPreset = (presetKey) => {
-    const preset = OFFLINE_PRESETS[presetKey];
-    if (preset) {
-      setFormData({ ...preset });
-      showToast(`Modelo "${preset.curso}" carregado!`, 'success');
-      setCurrentStep(1);
+  // Full AI PTD Generator Handler
+  const handleGenerateFullPtd = async (params) => {
+    if (!geminiKey || !geminiKey.trim()) {
+      showToast('Chave da API Gemini não configurada. Insira sua chave no botão "Chave Gemini" no topo da página para gerar com IA.', 'error');
+      return;
+    }
+
+    setLoadingFullAi(true);
+
+    try {
+      showToast('Consultando IA Google Gemini para gerar o PTD completo...', 'info');
+      const aiData = await generateFullPtdWithGemini(params, geminiKey.trim());
+      if (aiData && aiData.situacao_aprendizagem) {
+        const fullResult = {
+          ...params,
+          ...aiData
+        };
+        setFormData((prev) => ({
+          ...prev,
+          ...fullResult
+        }));
+        setShowFullAiModal(false);
+        showToast('PTD completo gerado com sucesso via IA Google Gemini!', 'success');
+        setCurrentStep(1);
+      } else {
+        throw new Error('A IA não retornou todos os campos obrigatórios do PTD.');
+      }
+    } catch (err) {
+      console.error('Falha na requisição Gemini completa:', err);
+      const errMsg = err?.message || '';
+      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('resource_exhausted')) {
+        showToast('Erro 429: Cota excedida na chave Gemini. Gere a chave em um "Novo Projeto" no AI Studio conforme o tutorial.', 'error');
+      } else if (errMsg.includes('400') || errMsg.includes('403') || errMsg.toLowerCase().includes('key not valid')) {
+        showToast('Erro: Chave Gemini inválida ou não autorizada. Verifique sua chave no topo da tela.', 'error');
+      } else {
+        showToast(`Erro na comunicação com o Google Gemini: ${errMsg}`, 'error');
+      }
+    } finally {
+      setLoadingFullAi(false);
     }
   };
 
@@ -132,21 +172,22 @@ export default function App() {
     setCurrentStep(1);
   };
 
-  // AI & Offline Suggestion Dispatcher
+  // AI Suggestion Dispatcher - Comunicação Direta com IA
   const handleSuggest = async (stepId) => {
+    if (!geminiKey || !geminiKey.trim()) {
+      showToast('Chave da API Gemini não configurada. Insira sua chave no botão "Chave Gemini" no topo para sugerir com IA.', 'error');
+      return;
+    }
+
     setLoadingSuggest(true);
     const curso = formData.curso || 'Curso Técnico';
     const uc = formData.uc || 'Prática Profissional';
     const chUc = formData.ch_uc || '80H';
     const situacao = formData.situacao_aprendizagem || '';
 
-    let generated = null;
-    let usedOnlineGemini = false;
-
-    if (geminiKey) {
-      try {
-        showToast('Consultando IA Google Gemini...', 'info');
-        const baseContext = `Você é um especialista em Design Instrucional e Pedagogia Institucional do Senac.
+    try {
+      showToast('Consultando IA Google Gemini...', 'info');
+      const baseContext = `Você é um especialista em Design Instrucional e Pedagogia do Senac.
 Contexto do PTD:
 - Curso Técnico: "${curso}"
 - Unidade Curricular: "${uc}"
@@ -155,107 +196,91 @@ ${situacao ? `- Situação de Aprendizagem: "${situacao}"` : ''}
 
 Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pedagógico Senac (Competências, Metodologias Ativas, Avaliação Formativa e Processual).`;
 
-        if (stepId === 3) {
-          const p = `${baseContext}\nTarefa: Escreva a "(1) Situação de Aprendizagem" para esta UC (1 a 2 parágrafos com desafio profissional articulado). Apenas o texto direto sem introduções.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { situacao_aprendizagem: cleanMarkdown(res) };
-          usedOnlineGemini = true;
-        } else if (stepId === 4) {
-          const p = `${baseContext}\nTarefa: Gere os "(2) Indicadores trabalhados na Situação de Aprendizagem" com carga horária distribuída (ex: "8 H") e o total de horas da situação.\nFormato: Linhas com indicador e carga horária ao fim. Última linha: TOTAL_CH: XX horas`;
-          const res = await generateWithGemini(p, geminiKey);
-          const lines = res.split('\n');
-          let chSit = '32 horas';
-          const indLines = [];
-          lines.forEach((l) => {
-            if (l.toUpperCase().includes('TOTAL_CH:')) {
-              chSit = l.split(':')[1].trim();
-            } else if (l.trim()) {
-              indLines.push(l.trim().replace(/^[-*•]\s*/, ''));
-            }
-          });
-          generated = { indicadores: indLines.join('\n'), ch_situacao: chSit };
-          usedOnlineGemini = true;
-        } else if (stepId === 5) {
-          const p = `${baseContext}\nTarefa: Gere os "(3) Elementos da Competência" em JSON estrito:\n{\n  "conhecimentos": "itens...",\n  "habilidades": "itens...",\n  "atitudes_valores": "itens..."\n}`;
-          const res = await generateWithGemini(p, geminiKey);
-          const parsed = parseJsonSafely(res);
-          if (parsed?.conhecimentos) {
-            generated = parsed;
-            usedOnlineGemini = true;
+      let generated = null;
+
+      if (stepId === 3) {
+        const p = `${baseContext}\nTarefa: Escreva a "(1) Situação de Aprendizagem" para esta UC (1 a 2 parágrafos com desafio profissional articulado). Apenas o texto direto sem introduções.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { situacao_aprendizagem: cleanMarkdown(res) };
+      } else if (stepId === 4) {
+        const p = `${baseContext}\nTarefa: Gere os "(2) Indicadores trabalhados na Situação de Aprendizagem" com carga horária distribuída (ex: "8 H") e o total de horas da situação.\nFormato: Linhas com indicador e carga horária ao fim. Última linha: TOTAL_CH: XX horas`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        const lines = res.split('\n');
+        let chSit = '32 horas';
+        const indLines = [];
+        lines.forEach((l) => {
+          if (l.toUpperCase().includes('TOTAL_CH:')) {
+            chSit = l.split(':')[1].trim();
+          } else if (l.trim()) {
+            indLines.push(l.trim().replace(/^[-*•]\s*/, ''));
           }
-        } else if (stepId === 6) {
-          const p = `${baseContext}\nTarefa: Escreva a abordagem de "(4) Metodologias Ativas (Geral)" para a UC (1 parágrafo denso citando PBL, estudos de caso, etc). Apenas o texto.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { metodologias_ativas: cleanMarkdown(res) };
-          usedOnlineGemini = true;
-        } else if (stepId === 7) {
-          const p = `${baseContext}\nTarefa: Gere os 3 momentos didáticos da Situação de Aprendizagem em JSON:\n{\n  "acao_inicial": "...",\n  "reflexao": "...",\n  "acao_final": "..."\n}`;
-          const res = await generateWithGemini(p, geminiKey);
-          const parsed = parseJsonSafely(res);
-          if (parsed?.acao_inicial) {
-            generated = parsed;
-            usedOnlineGemini = true;
-          }
-        } else if (stepId === 8) {
-          const p = `${baseContext}\nTarefa: Gere os procedimentos de avaliação formativa correspondentes aos momentos em JSON:\n{\n  "proc_inicial": "...",\n  "proc_reflexao": "...",\n  "proc_final": "..."\n}`;
-          const res = await generateWithGemini(p, geminiKey);
-          const parsed = parseJsonSafely(res);
-          if (parsed?.proc_inicial) {
-            generated = parsed;
-            usedOnlineGemini = true;
-          }
-        } else if (stepId === 9) {
-          const p = `${baseContext}\nTarefa: Gere a lista de "(9) Instrumentos de Avaliação" do Senac (Portfólios, rubricas, observações diretas) com justificativa. Apenas as linhas.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { instrumentos_avaliacao: cleanMarkdown(res) };
-          usedOnlineGemini = true;
-        } else if (stepId === 10) {
-          const p = `${baseContext}\nTarefa: Liste as Marcas Formativas Senac trabalhadas (Domínio técnico-científico, Visão crítica, etc). Apenas a lista.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { marcas_formativas: cleanMarkdown(res) };
-          usedOnlineGemini = true;
-        } else if (stepId === 11) {
-          const p = `${baseContext}\nTarefa: Liste os "(11) Materiais e Recursos Tecnológicos" necessários para a UC. Apenas as linhas.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { materiais_tecnologicos: cleanMarkdown(res) };
-          usedOnlineGemini = true;
-        } else if (stepId === 12) {
-          const p = `${baseContext}\nTarefa: Gere 3 a 5 Referências Bibliográficas formatadas nas normas ABNT NBR 6023 para a UC "${uc}". Apenas a lista alfabética.`;
-          const res = await generateWithGemini(p, geminiKey);
-          generated = { referencias: cleanMarkdown(res) };
-          usedOnlineGemini = true;
+        });
+        generated = { indicadores: indLines.join('\n'), ch_situacao: chSit };
+      } else if (stepId === 5) {
+        const p = `${baseContext}\nTarefa: Gere os "(3) Elementos da Competência" em JSON estrito:\n{\n  "conhecimentos": "itens...",\n  "habilidades": "itens...",\n  "atitudes_valores": "itens..."\n}`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        const parsed = parseJsonSafely(res);
+        if (parsed?.conhecimentos) {
+          generated = parsed;
         }
-      } catch (err) {
-        console.warn('Falha na requisição Gemini:', err);
-        const errMsg = err?.message || '';
-        if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('resource_exhausted')) {
-          showToast('Cota da chave Gemini excedida (Erro 429). Sugestão institucional aplicada.', 'warning');
-        } else if (errMsg.includes('400') || errMsg.includes('403') || errMsg.toLowerCase().includes('key not valid') || errMsg.toLowerCase().includes('api_key_invalid')) {
-          showToast('Chave Gemini inválida ou não autorizada. Sugestão institucional aplicada.', 'warning');
-        } else {
-          showToast('Conexão Gemini indisponível. Sugestão institucional aplicada.', 'info');
+      } else if (stepId === 6) {
+        const p = `${baseContext}\nTarefa: Escreva a abordagem de "(4) Metodologias Ativas (Geral)" para a UC (1 parágrafo denso citando PBL, estudos de caso, etc). Apenas o texto.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { metodologias_ativas: cleanMarkdown(res) };
+      } else if (stepId === 7) {
+        const p = `${baseContext}\nTarefa: Gere os 3 momentos didáticos da Situação de Aprendizagem em JSON:\n{\n  "acao_inicial": "...",\n  "reflexao": "...",\n  "acao_final": "..."\n}`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        const parsed = parseJsonSafely(res);
+        if (parsed?.acao_inicial) {
+          generated = parsed;
         }
+      } else if (stepId === 8) {
+        const p = `${baseContext}\nTarefa: Gere os procedimentos de avaliação formativa correspondentes aos momentos em JSON:\n{\n  "proc_inicial": "...",\n  "proc_reflexao": "...",\n  "proc_final": "..."\n}`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        const parsed = parseJsonSafely(res);
+        if (parsed?.proc_inicial) {
+          generated = parsed;
+        }
+      } else if (stepId === 9) {
+        const p = `${baseContext}\nTarefa: Gere a lista de "(9) Instrumentos de Avaliação" do Senac (Portfólios, rubricas, observações diretas) com justificativa. Apenas as linhas.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { instrumentos_avaliacao: cleanMarkdown(res) };
+      } else if (stepId === 10) {
+        const p = `${baseContext}\nTarefa: Liste as Marcas Formativas Senac trabalhadas (Domínio técnico-científico, Visão crítica, etc). Apenas a lista.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { marcas_formativas: cleanMarkdown(res) };
+      } else if (stepId === 11) {
+        const p = `${baseContext}\nTarefa: Liste os "(11) Materiais e Recursos Tecnológicos" necessários para a UC. Apenas as linhas.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { materiais_tecnologicos: cleanMarkdown(res) };
+      } else if (stepId === 12) {
+        const p = `${baseContext}\nTarefa: Gere 3 a 5 Referências Bibliográficas formatadas nas normas ABNT NBR 6023 para a UC "${uc}". Apenas a lista alfabética.`;
+        const res = await generateWithGemini(p, geminiKey.trim());
+        generated = { referencias: cleanMarkdown(res) };
       }
-    }
 
-    // Fallback if Gemini failed or wasn't provided
-    if (!generated) {
-      generated = getOfflineSuggestion(stepId, curso, uc);
-    }
-
-    if (generated) {
-      setFormData((prev) => ({
-        ...prev,
-        ...generated
-      }));
-      if (usedOnlineGemini) {
-        showToast('Sugestão gerada via Google Gemini!', 'success');
+      if (generated) {
+        setFormData((prev) => ({
+          ...prev,
+          ...generated
+        }));
+        showToast('Conteúdo gerado via IA Google Gemini com sucesso!', 'success');
       } else {
-        showToast('Sugestão institucional aplicada com sucesso!', 'success');
+        showToast('A IA não retornou conteúdo estruturado para este passo. Tente novamente.', 'warning');
       }
+    } catch (err) {
+      console.error('Falha na requisição Gemini:', err);
+      const errMsg = err?.message || '';
+      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('resource_exhausted')) {
+        showToast('Erro 429: Cota excedida na chave Gemini. Consulte o tutorial para criar a chave em um "Novo Projeto" gratuito.', 'error');
+      } else if (errMsg.includes('400') || errMsg.includes('403') || errMsg.toLowerCase().includes('key not valid') || errMsg.toLowerCase().includes('api_key_invalid')) {
+        showToast('Erro: Chave Gemini inválida ou não autorizada. Verifique sua chave no topo da tela.', 'error');
+      } else {
+        showToast(`Erro ao comunicar com a IA Gemini: ${errMsg}`, 'error');
+      }
+    } finally {
+      setLoadingSuggest(false);
     }
-
-    setLoadingSuggest(false);
   };
 
   const nextStep = () => {
@@ -279,7 +304,9 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
         geminiKey={geminiKey}
         setGeminiKey={handleSetGeminiKey}
         onResetForm={handleResetForm}
+        onOpenFullAiModal={() => setShowFullAiModal(true)}
         autosaved={autosaved}
+        onShowToast={showToast}
       />
 
       {/* Main Content */}
@@ -296,7 +323,11 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
         {/* Wizard Step Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8">
           {currentStep === 1 && (
-            <Step1Identificacao data={formData} onChange={handleFieldChange} />
+            <Step1Identificacao
+              data={formData}
+              onChange={handleFieldChange}
+              onOpenFullAiModal={() => setShowFullAiModal(true)}
+            />
           )}
           {currentStep === 2 && (
             <Step2UnidadeCurricular data={formData} onChange={handleFieldChange} />
@@ -444,12 +475,23 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
         </div>
       )}
 
+      {/* Full AI PTD Generator Modal */}
+      <FullAiGeneratorModal
+        isOpen={showFullAiModal}
+        onClose={() => setShowFullAiModal(false)}
+        initialData={formData}
+        onGenerate={handleGenerateFullPtd}
+        loading={loadingFullAi}
+        hasGeminiKey={!!geminiKey}
+      />
+
       {/* Toast Notifications */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`p-3.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 pointer-events-auto border ${
+            onClick={() => dismissToast(toast.id)}
+            className={`toast-notification p-3.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 pointer-events-auto border cursor-pointer select-none ${
               toast.type === 'success'
                 ? 'bg-emerald-600 text-white border-emerald-500'
                 : toast.type === 'warning'
@@ -458,19 +500,24 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
                 ? 'bg-rose-600 text-white border-rose-500'
                 : 'bg-slate-800 text-white border-slate-700'
             }`}
+            title="Clique para fechar esta notificação"
           >
-            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 flex-shrink-0" />}
-            {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 flex-shrink-0" />}
-            {toast.type === 'error' && <XCircle className="w-4 h-4 flex-shrink-0" />}
-            {toast.type === 'info' && <Info className="w-4 h-4 flex-shrink-0" />}
-            <span className="flex-1">{toast.message}</span>
+            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 flex-shrink-0 pointer-events-none" />}
+            {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 flex-shrink-0 pointer-events-none" />}
+            {toast.type === 'error' && <XCircle className="w-4 h-4 flex-shrink-0 pointer-events-none" />}
+            {toast.type === 'info' && <Info className="w-4 h-4 flex-shrink-0 pointer-events-none" />}
+            <span className="flex-1 leading-snug pointer-events-none">{toast.message}</span>
             <button
               type="button"
-              onClick={() => dismissToast(toast.id)}
-              className="p-1 rounded-lg hover:bg-white/20 text-white/80 hover:text-white transition flex-shrink-0 ml-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                dismissToast(toast.id);
+              }}
+              className="w-8 h-8 -mr-1 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 text-white transition flex-shrink-0 cursor-pointer"
               title="Fechar mensagem"
+              aria-label="Fechar mensagem"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4 pointer-events-none" />
             </button>
           </div>
         ))}

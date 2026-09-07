@@ -148,6 +148,15 @@
           <span class="hidden md:inline">Limpar</span>
         </button>
 
+        <!-- Gerar Tudo com IA Button -->
+        <button id="btnOpenFullAi" type="button"
+          class="bg-gradient-to-r from-amber-500 to-senac-orange hover:from-amber-600 hover:to-senac-orange-hover text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition flex items-center gap-1.5 border border-white/20 active:scale-95 cursor-pointer"
+          title="Preencher todos os 12 passos do PTD de uma vez via IA">
+          <i class="fa-solid fa-wand-magic-sparkles text-yellow-200"></i>
+          <span class="hidden sm:inline">Gerar Tudo com IA</span>
+          <span class="sm:hidden">IA Total</span>
+        </button>
+
         <!-- Toggle Gemini API key modal / bar -->
         <button id="btnToggleApiKey" type="button"
           class="bg-senac-orange hover:bg-senac-orange-hover text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5">
@@ -313,6 +322,89 @@
     </div>
   </div>
 
+  <!-- FULL AI GENERATOR MODAL -->
+  <div id="fullAiModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 text-slate-800 relative">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg flex-shrink-0 shadow">
+            <i class="fa-solid fa-wand-magic-sparkles text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-slate-900 leading-tight">
+              Gerar PTD Completo com IA
+            </h3>
+            <p class="text-xs text-slate-500">
+              Gere todos os 12 passos do plano pedagógico em uma única requisição
+            </p>
+          </div>
+        </div>
+        <button type="button" id="btnCloseFullAi" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-3 mb-4 text-xs text-amber-900 flex items-start gap-2">
+        <i class="fa-solid fa-book-open text-amber-600 mt-0.5"></i>
+        <div>
+          A IA preencherá automaticamente: <strong>Situação de Aprendizagem, Indicadores, Competências (CHA), Metodologias Ativas, Momentos Didáticos, Avaliação e Referências ABNT</strong>.
+        </div>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">
+            Nome do Curso Técnico <span class="text-rose-500">*</span>
+          </label>
+          <input type="text" id="aiModalCurso" placeholder="Ex: Técnico em Enfermagem, Técnico em Informática..."
+            class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue outline-none transition">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">
+            Unidade Curricular (UC) <span class="text-rose-500">*</span>
+          </label>
+          <input type="text" id="aiModalUc" placeholder="Ex: Primeiros Socorros, Banco de Dados..."
+            class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue outline-none transition">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Carga Horária da UC</label>
+            <input type="text" id="aiModalChUc" value="80 Horas"
+              class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue outline-none transition">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Formato</label>
+            <select id="aiModalFormato" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue outline-none transition bg-white">
+              <option value="Presencial">Presencial</option>
+              <option value="EaD">EaD</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Instrutor(a) (Opcional)</label>
+          <input type="text" id="aiModalInstrutor" placeholder="Nome do docente"
+            class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue outline-none transition">
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+          <button type="button" id="btnCancelFullAi"
+            class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="button" id="btnExecuteFullAi"
+            class="px-5 py-2.5 bg-gradient-to-r from-senac-orange to-amber-600 hover:from-senac-orange-hover hover:to-amber-700 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span id="btnExecuteFullAiText">Gerar Todos os Campos com IA</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
@@ -370,6 +462,27 @@
               <h3 class="text-xl font-heading font-bold text-slate-900">Identificação Básica</h3>
               <p class="text-sm text-slate-500">Informe os dados gerais do curso técnico e do corpo docente.</p>
             </div>
+          </div>
+
+          <!-- Full AI PTD Assistant Card -->
+          <div class="bg-gradient-to-r from-amber-50 to-orange-50/70 border border-amber-200/90 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-senac-orange text-white flex items-center justify-center flex-shrink-0 shadow">
+                <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
+              </div>
+              <div>
+                <h4 class="font-heading font-bold text-sm text-slate-900">Preencher Todo o PTD com IA</h4>
+                <p class="text-xs text-slate-600">Gere todas as 12 etapas do plano pedagógico de uma única vez.</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onclick="openFullAiModal()"
+              class="w-full sm:w-auto px-4 py-2 bg-senac-orange hover:bg-senac-orange-hover text-white text-xs font-bold rounded-xl shadow transition flex items-center justify-center gap-2 flex-shrink-0 active:scale-95 cursor-pointer"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+              <span>Gerar Tudo com IA</span>
+            </button>
           </div>
 
           <div
@@ -1904,8 +2017,169 @@ Tarefa: Gere 3 a 5 Referências Bibliográficas (livros, manuais oficiais ou doc
       goToStep(1);
     }
 
-    function closePresetsMenu() {
-      document.getElementById('presetsMenu')?.classList.add('hidden');
+    function openFullAiModal() {
+      const data = getFormData();
+      document.getElementById('aiModalCurso').value = data.curso || 'Técnico em Desenvolvimento de Sistemas';
+      document.getElementById('aiModalUc').value = data.uc || 'Desenvolver Aplicações Web';
+      document.getElementById('aiModalChUc').value = data.ch_uc || '80 Horas';
+      document.getElementById('aiModalInstrutor').value = data.instrutor || '';
+      document.getElementById('aiModalFormato').value = data.formato || 'Presencial';
+      document.getElementById('fullAiModal')?.classList.remove('hidden');
+    }
+
+    function closeFullAiModal() {
+      document.getElementById('fullAiModal')?.classList.add('hidden');
+    }
+
+    async function executeFullAi() {
+      const curso = document.getElementById('aiModalCurso').value.trim() || 'Curso Técnico';
+      const uc = document.getElementById('aiModalUc').value.trim() || 'Prática Profissional';
+      const chUc = document.getElementById('aiModalChUc').value.trim() || '80 Horas';
+      const instrutor = document.getElementById('aiModalInstrutor').value.trim();
+      const formato = document.getElementById('aiModalFormato').value;
+
+      const btn = document.getElementById('btnExecuteFullAi');
+      const textSpan = document.getElementById('btnExecuteFullAiText');
+      const originalText = textSpan.innerText;
+      btn.disabled = true;
+      textSpan.innerText = 'Gerando PTD Completo com IA...';
+
+      let fullData = null;
+      let usedOnline = false;
+      const apiKey = sessionStorage.getItem('gemini_api_key');
+
+      if (apiKey) {
+        try {
+          showToast('Consultando IA Google Gemini para gerar o PTD completo...', 'info');
+          const prompt = `Você é um Especialista Sênior em Design Pedagógico e Coordenador Técnico do Senac.
+Gere um Plano de Trabalho Docente (PTD) COMPLETO e PROFISSIONAL no Modelo Pedagógico Senac para:
+- Curso Técnico: "${curso}"
+- Unidade Curricular (UC): "${uc}"
+- Carga Horária da UC: "${chUc}"
+${instrutor ? `- Instrutor: "${instrutor}"` : ''}
+${formato ? `- Formato: "${formato}"` : ''}
+
+Diretrizes Obrigatórias Senac:
+1. Situação de Aprendizagem articulada ao mercado de trabalho, com contexto autêntico e desafio profissional instigante.
+2. Indicadores mensuráveis com distribuição de carga horária para a situação.
+3. Elementos da Competência (Conhecimentos técnicos, Habilidades operacionais, Atitudes e valores).
+4. Metodologias ativas contextualizadas (PBL, estudo de caso, oficinas práticas).
+5. 3 Momentos Pedagógicos (Ação Inicial, Reflexão, Ação Final) integrados a procedimentos de avaliação formativa.
+6. Instrumentos de avaliação e marcas formativas Senac.
+7. Materiais e recursos tecnológicos específicos.
+8. 3 a 5 Referências bibliográficas rigorosamente nas normas ABNT NBR 6023.
+
+Retorne EXCLUSIVAMENTE um JSON estrito (sem markdown exterior, sem explicações) com as seguintes chaves:
+{
+  "situacao_aprendizagem": "texto...",
+  "indicadores": "linha 1... 8 H\\nlinha 2... 12 H",
+  "ch_situacao": "32 horas",
+  "conhecimentos": "itens...",
+  "habilidades": "itens...",
+  "atitudes_valores": "itens...",
+  "metodologias_ativas": "texto...",
+  "acao_inicial": "texto...",
+  "reflexao": "texto...",
+  "acao_final": "texto...",
+  "proc_inicial": "texto...",
+  "proc_reflexao": "texto...",
+  "proc_final": "texto...",
+  "instrumentos_avaliacao": "texto...",
+  "marcas_formativas": "texto...",
+  "materiais_tecnologicos": "texto...",
+  "referencias": "texto..."
+}`;
+
+          const raw = await callGeminiApi(prompt, apiKey);
+          const parsed = parseJsonSafely(raw);
+          if (parsed && parsed.situacao_aprendizagem) {
+            fullData = {
+              curso,
+              uc,
+              ch_uc: chUc,
+              instrutor,
+              formato,
+              ...parsed
+            };
+            usedOnline = true;
+          }
+        } catch (apiErr) {
+          console.warn('Falha Gemini completo:', apiErr);
+          const errMsg = apiErr?.message || '';
+          if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota')) {
+            showToast('Cota da chave Gemini excedida (Erro 429). Sugestão institucional aplicada.', 'warning');
+          } else if (errMsg.includes('400') || errMsg.includes('403')) {
+            showToast('Chave Gemini inválida ou não autorizada. Sugestão institucional aplicada.', 'warning');
+          } else {
+            showToast('Conexão Gemini indisponível. Sugestão institucional aplicada.', 'info');
+          }
+        }
+      }
+
+      // Fallback: Generate full institutional PTD for all steps
+      if (!fullData) {
+        fullData = {
+          curso,
+          uc,
+          ch_uc: chUc,
+          instrutor,
+          formato
+        };
+        const cLower = curso.toLowerCase();
+        let match = null;
+        if (cLower.includes('inteligência artificial') || cLower.includes('ia')) match = OFFLINE_DB.ia;
+        else if (cLower.includes('desenvolvimento') || cLower.includes('sistemas')) match = OFFLINE_DB.ds;
+        else if (cLower.includes('administração') || cLower.includes('gestão')) match = OFFLINE_DB.adm;
+
+        for (let step = 3; step <= 12; step++) {
+          const stepKey = 'step' + step;
+          let part = null;
+          if (match) {
+            if (step === 3) part = { situacao_aprendizagem: match.situacao_aprendizagem };
+            else if (step === 4) part = { indicadores: match.indicadores, ch_situacao: match.ch_situacao };
+            else if (step === 5) part = { conhecimentos: match.conhecimentos, habilidades: match.habilidades, atitudes_valores: match.atitudes_valores };
+            else if (step === 6) part = { metodologias_ativas: match.metodologias_ativas };
+            else if (step === 7) part = { acao_inicial: match.acao_inicial, reflexao: match.reflexao, acao_final: match.acao_final };
+            else if (step === 8) part = { proc_inicial: match.proc_inicial, proc_reflexao: match.proc_reflexao, proc_final: match.proc_final };
+            else if (step === 9) part = { instrumentos_avaliacao: match.instrumentos_avaliacao };
+            else if (step === 10) part = { marcas_formativas: match.marcas_formativas };
+            else if (step === 11) part = { materiais_tecnologicos: match.materiais_tecnologicos };
+            else if (step === 12) part = { referencias: match.referencias };
+          } else {
+            const h = generateHeuristicSuggestion(stepKey, curso, uc);
+            if (step === 3) part = { situacao_aprendizagem: h };
+            else if (step === 4) part = { indicadores: h, ch_situacao: "32 horas" };
+            else if (step === 5) part = h;
+            else if (step === 6) part = { metodologias_ativas: h };
+            else if (step === 7) part = h;
+            else if (step === 8) part = h;
+            else if (step === 9) part = { instrumentos_avaliacao: h };
+            else if (step === 10) part = { marcas_formativas: h };
+            else if (step === 11) part = { materiais_tecnologicos: h };
+            else if (step === 12) part = { referencias: h };
+          }
+          if (part) fullData = { ...fullData, ...part };
+        }
+      }
+
+      // Apply all fields to form
+      for (const [key, val] of Object.entries(fullData)) {
+        const el = document.getElementById(key);
+        if (el) el.value = val;
+      }
+      saveFormData();
+      updateCharacterCounters();
+      updateMarcaButtons();
+      closeFullAiModal();
+      btn.disabled = false;
+      textSpan.innerText = originalText;
+
+      if (usedOnline) {
+        showToast('PTD completo gerado com sucesso via Google Gemini!', 'success');
+      } else {
+        showToast('PTD completo gerado com sucesso! Todos os 12 passos preenchidos.', 'success');
+      }
+      goToStep(1);
     }
 
     // --------------------------------------------------------------------------
@@ -1915,8 +2189,19 @@ Tarefa: Gere 3 a 5 Referências Bibliográficas (livros, manuais oficiais ou doc
       const container = document.getElementById('toastContainer');
       if (!container) return;
 
+      // Remove duplicate messages and limit to max 2 active toasts
+      Array.from(container.children).forEach(child => {
+        if (child.dataset.message === message) {
+          child.remove();
+        }
+      });
+      while (container.children.length >= 2) {
+        container.firstElementChild.remove();
+      }
+
       const toast = document.createElement('div');
-      toast.className = `p-3.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 pointer-events-auto border ${type === 'success' ? 'bg-emerald-600 text-white border-emerald-500' :
+      toast.dataset.message = message;
+      toast.className = `toast-notification p-3.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 pointer-events-auto border cursor-pointer select-none ${type === 'success' ? 'bg-emerald-600 text-white border-emerald-500' :
           type === 'warning' ? 'bg-amber-500 text-white border-amber-400' :
             type === 'error' ? 'bg-rose-600 text-white border-rose-500' :
               'bg-slate-800 text-white border-slate-700'
@@ -1927,29 +2212,29 @@ Tarefa: Gere 3 a 5 Referências Bibliográficas (livros, manuais oficiais ou doc
           type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info';
 
       toast.innerHTML = `
-        <i class="fa-solid ${icon} text-sm flex-shrink-0"></i>
-        <span class="flex-1">${message}</span>
-        <button type="button" class="p-1 rounded-lg hover:bg-white/20 text-white/80 hover:text-white transition flex-shrink-0 ml-1" title="Fechar mensagem">
-          <i class="fa-solid fa-xmark text-xs"></i>
+        <i class="fa-solid ${icon} text-sm flex-shrink-0 pointer-events-none"></i>
+        <span class="flex-1 pointer-events-none leading-snug">${message}</span>
+        <button type="button" onclick="event.stopPropagation(); this.closest('.toast-notification').remove();" class="w-8 h-8 -mr-1 flex items-center justify-center rounded-lg hover:bg-white/25 active:scale-90 text-white transition flex-shrink-0 cursor-pointer" title="Fechar mensagem">
+          <i class="fa-solid fa-xmark text-sm pointer-events-none"></i>
         </button>
       `;
-      container.appendChild(toast);
 
-      const closeBtn = toast.querySelector('button');
       const dismiss = () => {
         toast.classList.add('opacity-0', 'translate-x-4');
-        setTimeout(() => toast.remove(), 250);
+        setTimeout(() => toast.remove(), 200);
       };
 
-      closeBtn?.addEventListener('click', dismiss);
+      // Clicking anywhere on the toast also dismisses it immediately
+      toast.addEventListener('click', dismiss);
+
+      container.appendChild(toast);
 
       requestAnimationFrame(() => {
         toast.classList.remove('translate-y-2');
         toast.classList.add('translate-y-0');
       });
 
-      const autoCloseTimer = setTimeout(dismiss, 4500);
-      closeBtn?.addEventListener('click', () => clearTimeout(autoCloseTimer));
+      setTimeout(dismiss, 4500);
     }
 
     // --------------------------------------------------------------------------
@@ -2389,6 +2674,18 @@ Tarefa: Gere 3 a 5 Referências Bibliográficas (livros, manuais oficiais ou doc
       tutModal?.addEventListener('click', (e) => {
         if (e.target === tutModal) {
           tutModal.classList.add('hidden');
+        }
+      });
+
+      // Full AI Modal Handlers
+      const fAiModal = document.getElementById('fullAiModal');
+      document.getElementById('btnOpenFullAi')?.addEventListener('click', openFullAiModal);
+      document.getElementById('btnCloseFullAi')?.addEventListener('click', closeFullAiModal);
+      document.getElementById('btnCancelFullAi')?.addEventListener('click', closeFullAiModal);
+      document.getElementById('btnExecuteFullAi')?.addEventListener('click', executeFullAi);
+      fAiModal?.addEventListener('click', (e) => {
+        if (e.target === fAiModal) {
+          closeFullAiModal();
         }
       });
 

@@ -9,23 +9,104 @@ import {
   Check, 
   ExternalLink,
   HelpCircle,
-  X
+  X,
+  Wifi,
+  Loader2,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
+import { 
+  testGeminiConnection, 
+  SUPPORTED_MODELS, 
+  getSelectedModel, 
+  setSelectedModel as saveSelectedModel, 
+  getLastSuccessfulModel 
+} from '../services/geminiService';
 
 export default function Header({
   geminiKey,
   setGeminiKey,
   onResetForm,
-  autosaved
+  onOpenFullAiModal,
+  autosaved,
+  onShowToast
 }) {
   const [showKeyDrawer, setShowKeyDrawer] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showTutorialModal, setShowTutorialModal] = useState(false);
   const [tempKey, setTempKey] = useState(geminiKey || '');
+  const [testingAi, setTestingAi] = useState(false);
+  const [aiStatus, setAiStatus] = useState(null); // 'connected' | 'error' | null
+  const [selectedModel, setSelectedModel] = useState(() => getSelectedModel());
+  const [activeModelName, setActiveModelName] = useState(() => getLastSuccessfulModel());
+  const [modelList, setModelList] = useState(SUPPORTED_MODELS);
 
   const handleSaveKey = () => {
     setGeminiKey(tempKey.trim());
+    saveSelectedModel(selectedModel);
     setShowKeyDrawer(false);
+  };
+
+  const handleModelChange = (e) => {
+    const newModel = e.target.value;
+    setSelectedModel(newModel);
+    saveSelectedModel(newModel);
+    if (newModel !== 'auto') {
+      setActiveModelName(newModel);
+    }
+  };
+
+  const handleTestConnection = async () => {
+    const keyToTest = (tempKey || geminiKey || '').trim();
+    if (!keyToTest) {
+      if (onShowToast) {
+        onShowToast('Cole a sua chave Gemini no campo antes de testar a comunicação.', 'warning');
+      }
+      return;
+    }
+
+    setTestingAi(true);
+    setAiStatus(null);
+    if (onShowToast) {
+      onShowToast('Enviando requisição de teste para o Google Gemini...', 'info');
+    }
+
+    try {
+      const response = await testGeminiConnection(keyToTest, selectedModel);
+      setAiStatus('connected');
+      const used = response.usedModel || getLastSuccessfulModel();
+      setActiveModelName(used);
+      
+      if (response.availableModels && response.availableModels.length > 0) {
+        setModelList([
+          { id: 'auto', name: '⚡ Automático (Recomendado)' },
+          ...response.availableModels
+        ]);
+      }
+
+      // Salva a chave automaticamente se estiver válida
+      setGeminiKey(keyToTest);
+      if (onShowToast) {
+        onShowToast(`✅ Conexão estabelecida com sucesso via [${used}]! "${response.text || response}"`, 'success');
+      }
+    } catch (err) {
+      console.error('Falha no teste de conexão Gemini:', err);
+      setAiStatus('error');
+      const msg = err?.message || 'Falha na requisição';
+      if (onShowToast) {
+        if (msg.includes('429') || msg.toLowerCase().includes('quota') || msg.toLowerCase().includes('resource_exhausted')) {
+          onShowToast('Erro 429: Cota esgotada nesta chave. Abra o Google AI Studio com um @gmail pessoal e crie a chave em "Novo Projeto".', 'error');
+        } else if (msg.includes('503') || msg.toLowerCase().includes('high demand')) {
+          onShowToast('Servidores do Gemini em alta demanda temporária (503). O sistema tentou 3 vezes. Aguarde alguns segundos e clique novamente.', 'warning');
+        } else if (msg.includes('400') || msg.includes('403') || msg.toLowerCase().includes('key not valid') || msg.toLowerCase().includes('api_key_invalid')) {
+          onShowToast('Erro: Chave de API inválida. Confira o código da chave copiado no AI Studio.', 'error');
+        } else {
+          onShowToast(`Erro ao testar comunicação com Gemini: ${msg}`, 'error');
+        }
+      }
+    } finally {
+      setTestingAi(false);
+    }
   };
 
   return (
@@ -81,6 +162,18 @@ export default function Header({
               <span className="hidden md:inline">Limpar</span>
             </button>
 
+            {/* Gerar Tudo com IA Button */}
+            <button
+              type="button"
+              onClick={onOpenFullAiModal}
+              className="bg-gradient-to-r from-amber-500 to-senac-orange hover:from-amber-600 hover:to-senac-orange-hover text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:shadow transition flex items-center gap-1.5 border border-white/20 active:scale-95 cursor-pointer"
+              title="Preencher todos os 12 passos do PTD de uma vez via IA"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-yellow-200" />
+              <span className="hidden sm:inline">Gerar Tudo com IA</span>
+              <span className="sm:hidden">IA Total</span>
+            </button>
+
             {/* Gemini API Key Toggle */}
             <button
               type="button"
@@ -100,18 +193,47 @@ export default function Header({
         <section className="bg-slate-900 text-white border-b border-slate-700 transition-all p-4">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div className="flex-1">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                <h2 className="text-sm font-semibold text-white">Configuração Opcional de IA (Google Gemini)</h2>
-                <span className="bg-amber-400/20 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-medium">Opcional</span>
+                <h2 className="text-sm font-semibold text-white">IA Gemini • Nível Gratuito (Free Tier)</h2>
+                <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] px-2 py-0.5 rounded-full font-medium">
+                  15 req/min sem custos
+                </span>
+                <span className="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px] px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                  Modelo: <strong className="text-white font-semibold">{activeModelName || 'gemini-1.5-flash'}</strong>
+                </span>
+                {aiStatus === 'connected' && (
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> Conexão Ativa
+                  </span>
+                )}
+                {aiStatus === 'error' && (
+                  <span className="bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" /> Erro na Chave
+                  </span>
+                )}
               </div>
-              <p className="text-xs text-slate-300 mt-0.5">
-                Insira sua chave para geração em tempo real com o Gemini. Se deixar em branco, o sistema gerará as sugestões institucionais do Senac.
+              <p className="text-xs text-slate-300 mt-1">
+                Utilize sua chave gratuita gerada no Google AI Studio. Em caso de alta demanda (503), o sistema <strong>desce automaticamente</strong> para o próximo modelo estável.
               </p>
             </div>
 
             <div className="w-full md:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <div className="relative flex-1 sm:w-80">
+              {/* Seletor de Modelo / Cascata */}
+              <select
+                value={selectedModel}
+                onChange={handleModelChange}
+                className="px-2.5 py-1.5 text-xs bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-senac-orange cursor-pointer"
+                title="Selecione o modelo do Gemini ou deixe em Automático para descer em cascata caso haja instabilidade"
+              >
+                {modelList.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+
+              <div className="relative flex-1 sm:w-64">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={tempKey}
@@ -128,10 +250,31 @@ export default function Header({
                 </button>
               </div>
 
+              {/* Botão Testar Comunicação com a IA */}
+              <button
+                type="button"
+                onClick={handleTestConnection}
+                disabled={testingAi}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-emerald-500/40 flex items-center justify-center gap-1.5 disabled:opacity-50 shadow-sm"
+                title="Testar requisição e resposta direta com a IA Gemini"
+              >
+                {testingAi ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Testando...</span>
+                  </>
+                ) : (
+                  <>
+                    <Wifi className="w-3.5 h-3.5" />
+                    <span>Testar IA</span>
+                  </>
+                )}
+              </button>
+
               <button
                 type="button"
                 onClick={handleSaveKey}
-                className="bg-senac-blue hover:bg-senac-navy text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-white/10 flex items-center justify-center gap-1.5"
+                className="bg-senac-blue hover:bg-senac-navy text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-white/10 flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <Check className="w-3.5 h-3.5" />
                 Aplicar Chave
@@ -189,78 +332,127 @@ export default function Header({
             </div>
 
             {/* Steps */}
-            <div className="space-y-3.5 text-xs text-slate-600 max-h-[60vh] overflow-y-auto pr-1">
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                  1
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-900">Acesse o Google AI Studio</p>
-                  <p className="text-slate-500 mt-0.5">
-                    Abra o portal oficial de desenvolvedores do Google pelo link{' '}
-                    <a
-                      href="https://aistudio.google.com/app/apikey"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-senac-blue font-semibold hover:underline inline-flex items-center gap-0.5"
-                    >
-                      aistudio.google.com/app/apikey <ExternalLink className="w-3 h-3 inline" />
-                    </a>{' '}
-                    e faça login com sua conta Google (Gmail).
-                  </p>
+            <div className="space-y-4 text-xs text-slate-600 max-h-[65vh] overflow-y-auto pr-1.5">
+              
+              {/* Passo 1 */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    1
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">Acesse o Google AI Studio e Aceite os Termos</p>
+                    <p className="text-slate-500 mt-0.5">
+                      Abra o link oficial{' '}
+                      <a
+                        href="https://aistudio.google.com/app/apikey"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-senac-blue font-semibold hover:underline inline-flex items-center gap-0.5"
+                      >
+                        aistudio.google.com/app/apikey <ExternalLink className="w-3 h-3 inline" />
+                      </a>{' '}
+                      com sua conta Google. Se for seu primeiro acesso, marque a caixinha dos termos de desenvolvedor e clique em <strong>Continue</strong>.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
+                  <img 
+                    src="/tutorial/step2_terms.png" 
+                    alt="Tela de Termos do Google AI Studio" 
+                    className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
+                    loading="lazy"
+                  />
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                  2
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-900">Clique em "Create API Key" (Criar Chave)</p>
-                  <p className="text-slate-500 mt-0.5">
-                    No canto superior ou na lista de chaves, clique no botão azul <strong>+ Create API key</strong>.
-                  </p>
+              {/* Passo 2 */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    2
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">Clique em "Create API key"</p>
+                    <p className="text-slate-500 mt-0.5">
+                      No painel de chaves (API Keys), clique no botão destacado no canto superior direito: <strong>Create API key</strong>.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
+                  <img 
+                    src="/tutorial/step3_dashboard.png" 
+                    alt="Botão Create API Key no Painel" 
+                    className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
+                    loading="lazy"
+                  />
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-amber-50/70 border border-amber-200">
-                <span className="w-6 h-6 rounded-full bg-senac-orange text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                  3
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-amber-950 flex items-center gap-1.5">
-                    <span>Atenção: Selecione "Novo Projeto"</span>
-                    <span className="bg-amber-200 text-amber-900 text-[10px] px-1.5 py-0.2 rounded font-bold uppercase">Crucial</span>
-                  </p>
-                  <p className="text-amber-900/80 mt-0.5">
-                    Escolha <strong>"Create API key in new project"</strong> (Criar chave em um novo projeto). Isso ativa automaticamente a <strong>cota gratuita oficial (15 requisições/minuto)</strong> sem bloqueios ou erro de cota 429.
-                  </p>
+              {/* Passo 3 */}
+              <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-300 space-y-2.5 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-senac-orange text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    3
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-semibold text-amber-950 text-sm flex items-center gap-1.5">
+                      <span>Escolha o Projeto Correto</span>
+                      <span className="bg-amber-200 text-amber-900 text-[10px] px-1.5 py-0.2 rounded font-bold uppercase">Crucial</span>
+                    </p>
+                    <p className="text-amber-900/85 mt-0.5">
+                      Na janela que abrir, dê um nome (ex: <em>Gemini API Key</em>) e selecione o projeto padrão ou <strong>novo projeto</strong> para ter a cota gratuita oficial de 15 requisições/minuto liberada. Clique no botão azul <strong>Create key</strong>.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-lg overflow-hidden border border-amber-200 shadow-sm bg-white">
+                  <img 
+                    src="/tutorial/step4_create_modal.png" 
+                    alt="Janela Create a new key" 
+                    className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
+                    loading="lazy"
+                  />
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                  4
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-900">Copie o Código da Chave</p>
-                  <p className="text-slate-500 mt-0.5">
-                    Na janela "API key details", clique em <strong>Copy key</strong> (Copiar chave) ou clique no ícone de cópia ao lado do código.
-                  </p>
+              {/* Passo 4 */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    4
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">Copie a Chave Gerada</p>
+                    <p className="text-slate-500 mt-0.5">
+                      Na tela com os detalhes da chave, clique no botão <strong>Copy key</strong> (Copiar chave) no rodapé da janela.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
+                  <img 
+                    src="/tutorial/step5_key_details.png" 
+                    alt="Janela com o botão Copy Key" 
+                    className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
+                    loading="lazy"
+                  />
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                  5
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-900">Cole na Aplicação</p>
-                  <p className="text-slate-500 mt-0.5">
-                    Cole o código copiado no campo "Chave Gemini" no topo da página e clique em <strong>"Aplicar Chave"</strong>.
-                  </p>
+              {/* Passo 5 */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-senac-blue text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    5
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 text-sm">Cole no Gerador de PTD Senac</p>
+                    <p className="text-slate-500 mt-0.5">
+                      Volte aqui no Gerador de PTD, cole o código copiado no campo da gaveta <strong>Chave Gemini</strong> e clique em <strong>Aplicar Chave</strong>.
+                    </p>
+                  </div>
                 </div>
               </div>
+
             </div>
 
             {/* Footer Actions */}
