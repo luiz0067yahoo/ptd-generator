@@ -1,0 +1,62 @@
+/* Document Preview Styles (Landscape A4 Sheet Simulation) */
+
+.document-sheet-container {
+  background-color: #475569;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+}
+
+.document-sheet-landscape {
+  background: #ffffff;
+  width: 100%;
+  min-width: 950px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  padding: 2.5rem;
+  font-family: Arial, sans-serif;
+  color: #000000;
+  border-radius: 4px;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.doc-table td,
+.doc-table th {
+  border: 1px solid #444444;
+  padding: 6px 10px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.doc-header-title {
+  text-align: center;
+  font-size: 13pt;
+  font-weight: bold;
+  margin-bottom: 1.25rem;
+}
+
+.doc-section-header {
+  background-color: #f1f5f9;
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+
+.doc-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.doc-content-text {
+  white-space: pre-wrap;
+  color: #222222;
+}
