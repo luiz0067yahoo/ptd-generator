@@ -16,7 +16,7 @@ import Step12ReferenciasConclusao from './components/steps/Step12ReferenciasConc
 
 import { OFFLINE_PRESETS, getOfflineSuggestion } from './services/offlineDatabase';
 import { generateWithGemini, cleanMarkdown, parseJsonSafely } from './services/geminiService';
-import { ArrowLeft, ArrowRight, CheckCircle2, AlertTriangle, XCircle, Info } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, AlertTriangle, XCircle, Info, X } from 'lucide-react';
 import './styles/wizard.css';
 
 // Todos os campos começam zerados conforme requisito estrito
@@ -88,7 +88,7 @@ export default function App() {
       showToast('Chave Gemini salva na sessão!', 'success');
     } else {
       sessionStorage.removeItem('gemini_api_key');
-      showToast('Chave removida. Usando modelo offline.', 'info');
+      showToast('Chave Gemini removida com sucesso.', 'info');
     }
   };
 
@@ -97,7 +97,11 @@ export default function App() {
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4000);
+    }, 4500);
+  };
+
+  const dismissToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
   const handleFieldChange = (field, value) => {
@@ -222,12 +226,19 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
           usedOnlineGemini = true;
         }
       } catch (err) {
-        console.warn('Falha Gemini, acionando fallback offline:', err);
-        showToast('Gemini offline ou chave com erro. Usando modelo pedagógico offline.', 'warning');
+        console.warn('Falha na requisição Gemini:', err);
+        const errMsg = err?.message || '';
+        if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('resource_exhausted')) {
+          showToast('Cota da chave Gemini excedida (Erro 429). Sugestão institucional aplicada.', 'warning');
+        } else if (errMsg.includes('400') || errMsg.includes('403') || errMsg.toLowerCase().includes('key not valid') || errMsg.toLowerCase().includes('api_key_invalid')) {
+          showToast('Chave Gemini inválida ou não autorizada. Sugestão institucional aplicada.', 'warning');
+        } else {
+          showToast('Conexão Gemini indisponível. Sugestão institucional aplicada.', 'info');
+        }
       }
     }
 
-    // Offline fallback if Gemini failed or wasn't provided
+    // Fallback if Gemini failed or wasn't provided
     if (!generated) {
       generated = getOfflineSuggestion(stepId, curso, uc);
     }
@@ -240,7 +251,7 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
       if (usedOnlineGemini) {
         showToast('Sugestão gerada via Google Gemini!', 'success');
       } else {
-        showToast('Sugestão aplicada via Modelo Offline!', 'info');
+        showToast('Sugestão institucional aplicada com sucesso!', 'success');
       }
     }
 
@@ -267,7 +278,6 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
       <Header
         geminiKey={geminiKey}
         setGeminiKey={handleSetGeminiKey}
-        onLoadPreset={handleLoadPreset}
         onResetForm={handleResetForm}
         autosaved={autosaved}
       />
@@ -453,7 +463,15 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
             {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 flex-shrink-0" />}
             {toast.type === 'error' && <XCircle className="w-4 h-4 flex-shrink-0" />}
             {toast.type === 'info' && <Info className="w-4 h-4 flex-shrink-0" />}
-            <span>{toast.message}</span>
+            <span className="flex-1">{toast.message}</span>
+            <button
+              type="button"
+              onClick={() => dismissToast(toast.id)}
+              className="p-1 rounded-lg hover:bg-white/20 text-white/80 hover:text-white transition flex-shrink-0 ml-1"
+              title="Fechar mensagem"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
           </div>
         ))}
       </div>
