@@ -72,6 +72,30 @@ export const OFFLINE_PRESETS = {
     marcas_formativas: "Visão crítica.\nDomínio técnico-científico.\nCriatividade e atitude empreendedora.\nAtitude sustentável.",
     materiais_tecnologicos: "Laboratório de informática com suíte de escritório (planilhas eletrônicas e apresentações).\nCalculadoras financeiras ou emuladores.\nSistema ERP educacional ou simulador gerencial online.\nProjetor multimídia.",
     referencias: "CHIAVENATO, Idalberto. Introdução à teoria geral da administração. 10. ed. São Paulo: Atlas, 2021.\nGITMAN, Lawrence J.; ZUTTER, Chad J. Princípios de administração financeira. 14. ed. São Paulo: Pearson, 2018.\nSEBRAE. Gestão financeira: conceitos e ferramentas práticas para pequenas e médias empresas. Brasília: Sebrae, 2024."
+  },
+  excel: {
+    curso: "Excel Recursos Avançados",
+    instrutor: "Luiz Fernando Brogliatto Ferreira",
+    formato: "Presencial local Senac Toledo Sala 12",
+    uc: "Funções básicas e avançadas do Excel",
+    ch_uc: "15H",
+    situacao_aprendizagem: "Os alunos serão desafiados a criar uma planilha complexa no Excel que simule um ambiente empresarial, contendo informações financeiras, dados de vendas, análises de desempenho e previsões futuras. A planilha servirá como ferramenta de suporte à tomada de decisões, possibilitando o uso de funções de data, texto, matemáticas e financeiras, bem como recursos avançados, como tabelas dinâmicas e macros.",
+    indicadores: "O aluno desenvolverá habilidades para aplicar funções de data, texto, matemáticas e financeiras, como também utilizará recursos de referência, formatação condicional, tabelas dinâmicas, macros, entre outros. Será capaz de vincular dados, criar formulários, proteger planilhas e células, aplicar filtros, usar hiperlinks e consolidar informações de diferentes planilhas. Ao final, o aluno estará apto a realizar análises complexas, projeções financeiras, automatizar tarefas e aplicar medidas de segurança e confidencialidade, tornando-se proficientes em recursos avançados do Excel.",
+    ch_situacao: "22/04/2024 a 26/04/2024 – segunda à sexta – 19:00 as 22:00h (15 horas)",
+    conhecimentos: "Funções de data, texto, matemáticas e financeiras no Excel;\nRecursos de referência, validação de dados e formatação condicional;\nTabelas dinâmicas, gráficos dinâmicos e consolidação de informações de diferentes planilhas;\nAutomação de rotinas de trabalho por meio de Macros;\nMedidas de segurança, proteção de células/planilhas e criação de formulários.",
+    habilidades: "Aplicar funções avançadas na resolução de problemas e simulações empresariais complexas;\nVincular dados e estruturar painéis analíticos através de tabelas dinâmicas;\nCriar formulários interativos, aplicar filtros e usar hiperlinks para consolidar dados;\nAutomatizar tarefas repetitivas via macros e implementar políticas de proteção e confidencialidade.",
+    atitudes_valores: "Rigor técnico e precisão na manipulação e integridade de dados corporativos;\nConfidencialidade e ética no manuseio de informações e dados sensíveis;\nColaboração efetiva no trabalho em equipe e compartilhamento de soluções;\nAtitude inovadora, proativa e sustentável na otimização de fluxos de trabalho.",
+    metodologias_ativas: "A metodologia ativa utilizada será a resolução de problemas com base em um cenário realista. Os alunos serão organizados em grupos e receberão um estudo de caso detalhado que descreve o contexto empresarial a ser simulado na planilha. Eles terão que trabalhar em conjunto para aplicar os conhecimentos aprendidos, pesquisar e explorar recursos avançados do Excel para criar a planilha solicitada.",
+    acao_inicial: "Os alunos receberão o estudo de caso, que apresentará os requisitos e informações para a criação da planilha empresarial no Excel. Eles serão orientados a identificar as principais necessidades do cenário, os dados que precisam ser coletados e as análises que devem ser realizadas. Nesse momento, será reforçada a importância das competências de domínio técnico-científico, visão crítica e atitude empreendedora, sustentável e colaborativa para alcançar os objetivos da situação de aprendizagem.",
+    reflexao: "Os alunos trabalharão em seus grupos para criar a planilha no Excel, aplicando as diversas funções e recursos mencionados na Unidade Curricular. Eles serão incentivados a buscar soluções criativas e eficientes para lidar com os desafios apresentados no estudo de caso. Durante esse processo, o instrutor fornecerá orientações, responderá a questionamentos e promoverá discussões para estimular a reflexão e o aprofundamento dos conhecimentos.",
+    acao_final: "Ao final da atividade, cada grupo apresentará sua planilha empresarial e as análises realizadas para o restante da turma. Essa apresentação permitirá que os alunos compartilhem suas soluções e aprendizados, além de receberem feedback dos colegas e do instrutor. Essa ação final está diretamente relacionada ao desenvolvimento das competências previstas na Unidade Curricular.",
+    proc_inicial: "Diagnóstico inicial da compreensão do estudo de caso empresarial e planejamento das necessidades de coleta e estruturação dos dados na planilha.",
+    proc_reflexao: "Acompanhamento formativo contínuo durante a elaboração da planilha em grupo, observando a aplicação das funções avançadas, raciocínio analítico e cooperação mútua.",
+    proc_final: "Avaliação somativa da apresentação final das planilhas empresariais e análises realizadas, verificando a precisão técnica, qualidade e atendimento aos requisitos.",
+    instrumentos_avaliacao: "A avaliação será realizada de forma formativa e somativa. Durante o desenvolvimento da planilha, o instrutor observará a participação ativa dos alunos, sua habilidade para aplicar as funções e recursos abordados, a criatividade na resolução dos problemas e a capacidade de trabalhar em equipe. A apresentação final das planilhas e análises também será avaliada quanto à qualidade e ao cumprimento dos requisitos estabelecidos.",
+    marcas_formativas: "Domínio técnico-científico: Aplicação das funções e recursos avançados do Excel para criar soluções eficazes no contexto empresarial.\nVisão crítica: Análise reflexiva das informações e resultados obtidos na planilha, identificando pontos fortes e oportunidades de melhoria.\nAtitude empreendedora, sustentável e colaborativa: Trabalho em equipe, busca por inovação e consideração dos aspectos sustentáveis ao desenvolver a planilha.",
+    materiais_tecnologicos: "Computadores com o software Excel instalado para cada aluno ou grupo.\nAcesso à internet para pesquisa de informações adicionais, tutoriais e recursos de suporte.\nProjetor ou tela para apresentação das planilhas ao restante da turma.\nMaterial impresso ou digital contendo o estudo de caso e as orientações da situação de aprendizagem.",
+    referencias: "MICROSOFT. Documentação e suporte técnico do Microsoft Excel. Microsoft Learn, 2024. Disponível em: https://support.microsoft.com/excel. Acesso em: 22 abr. 2024.\nMANZANO, José Augusto N. G. Excel Avançado: recursos avançados para tomada de decisões. São Paulo: Érica, 2022.\nSENAC. Departamento Nacional. Informática: planilhas eletrônicas aplicadas à gestão empresarial. Rio de Janeiro: Senac, 2023."
   }
 };
 
@@ -79,10 +103,13 @@ export function getOfflineSuggestion(stepId, cursoName, ucName) {
   const c = cursoName || "Curso Técnico";
   const u = ucName || "Prática Profissional da UC";
   const cLower = c.toLowerCase();
+  const uLower = u.toLowerCase();
 
   // Check preset match
   let match = null;
-  if (cLower.includes('inteligência artificial') || cLower.includes('ia') || cLower.includes('machine learning')) {
+  if (cLower.includes('excel') || cLower.includes('planilha') || uLower.includes('excel') || uLower.includes('funções básicas e avançadas')) {
+    match = OFFLINE_PRESETS.excel;
+  } else if (cLower.includes('inteligência artificial') || cLower.includes('ia') || cLower.includes('machine learning')) {
     match = OFFLINE_PRESETS.ia;
   } else if (cLower.includes('desenvolvimento') || cLower.includes('sistemas') || cLower.includes('computação') || cLower.includes('informática') || cLower.includes('programação')) {
     match = OFFLINE_PRESETS.ds;

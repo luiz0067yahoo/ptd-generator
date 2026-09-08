@@ -1,4 +1,4 @@
-// Gerador de Documento Word (.doc) Compatível com Word 97-2003 (Padrão Institucional Senac - Orientação Paisagem A4)
+// Gerador de Documento Word (.doc) Compatível com Word 97-2003 e Google Drive (Padrão Institucional Senac - Orientação Paisagem A4)
 
 import { SENAC_LOGO_BASE64 } from '../assets/logoSenac.js';
 
@@ -23,9 +23,9 @@ function formatCellText(content) {
 }
 
 export async function exportDoc(data) {
-  const boundary = '----=_NextPart_PTD_SENAC_2003';
+  const cleanBase64 = SENAC_LOGO_BASE64.replace(/\s+/g, '');
 
-  const htmlContent = `
+  const docHtml = `<!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -131,7 +131,7 @@ td.ptd-cell {
   <table class="header-table" cellpadding="0" cellspacing="0">
     <tr>
       <td align="left" style="width: 50%;">
-        <img src="logo_senac.png" width="155" height="31" alt="Senac" style="width: 155px; height: 31px; border: 0;" />
+        <img src="data:image/png;base64,${cleanBase64}" width="155" height="31" alt="Senac" style="width: 155px; height: 31px; border: 0;" />
       </td>
       <td align="right" style="width: 50%; font-size: 9pt; color: #64748b; font-family: Arial, sans-serif;">
         Educação Profissional Técnica de Nível Médio
@@ -275,34 +275,7 @@ td.ptd-cell {
 
 </div>
 </body>
-</html>
-`.trim();
-
-  // Limpa quebras e espaços da imagem base64
-  const cleanBase64 = SENAC_LOGO_BASE64.replace(/\s+/g, '');
-
-  // Constrói o pacote MHTML oficial para compatibilidade Word 97-2003
-  const mhtmlDoc = [
-    'MIME-Version: 1.0',
-    `Content-Type: multipart/related; boundary="${boundary}"`,
-    '',
-    `--${boundary}`,
-    'Content-Type: text/html; charset="utf-8"',
-    'Content-Transfer-Encoding: 8bit',
-    '',
-    htmlContent,
-    '',
-    `--${boundary}`,
-    'Content-Type: image/png',
-    'Content-Transfer-Encoding: base64',
-    'Content-Location: logo_senac.png',
-    'Content-ID: <logo_senac.png>',
-    '',
-    cleanBase64,
-    '',
-    `--${boundary}--`,
-    ''
-  ].join('\r\n');
+</html>`.trim();
 
   // Nomenclatura oficial do arquivo: "PTD [Curso] - [UC].doc"
   const cursoClean = (data.curso || 'Curso').trim();
@@ -313,7 +286,7 @@ td.ptd-cell {
   }
   const fileName = `${baseName}.doc`.replace(/[\\/:*?"<>|]/g, '');
 
-  const blob = new Blob([mhtmlDoc], { type: 'application/msword;charset=utf-8' });
+  const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

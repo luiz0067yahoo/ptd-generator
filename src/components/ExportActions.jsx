@@ -62,19 +62,19 @@ export default function ExportActions({ data, onShowToast }) {
               Tudo pronto para exportar seu PTD Oficial!
             </h4>
             <p className="text-xs sm:text-sm text-slate-200 mt-0.5">
-              Baixe nos formatos oficiais Senac: Word editável (.doc compatível com Word 97-2003) e documento final (.pdf).
+              Baixe nos formatos oficiais Senac: Word editável (.doc 97-2003 ou .docx para Google Drive) e documento final (.pdf).
             </p>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-          {/* DOC Button (Word 97-2003) */}
+          {/* DOC Button (Word 97-2003 / Universal) */}
           <button
             type="button"
             onClick={handleExportDoc}
             disabled={isBusy}
             className="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-100 text-senac-blue font-heading font-bold text-sm rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2.5 disabled:opacity-50"
-            title="Baixar em formato Word 97-2003 (.doc)"
+            title="Baixar em formato Word (.doc)"
           >
             {loadingDoc ? (
               <Loader2 className="w-5 h-5 text-senac-orange animate-spin" />
@@ -82,9 +82,30 @@ export default function ExportActions({ data, onShowToast }) {
               <FileText className="w-5 h-5 text-senac-orange" />
             )}
             <div className="flex items-center gap-1.5">
-              <span>Gerar Documento .DOC</span>
+              <span>Gerar .DOC</span>
               <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded border border-amber-300 uppercase tracking-tight">
-                97-2003
+                Word 97-2003
+              </span>
+            </div>
+          </button>
+
+          {/* DOCX Button (Google Drive / Docs & Word 365) */}
+          <button
+            type="button"
+            onClick={handleExportDocx}
+            disabled={isBusy}
+            className="w-full sm:w-auto px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-heading font-bold text-sm rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 border border-blue-400/40"
+            title="Exportar no formato .DOCX oficial compatível 100% com Google Drive / Google Docs e Microsoft 365"
+          >
+            {loadingDocx ? (
+              <Loader2 className="w-5 h-5 text-white animate-spin" />
+            ) : (
+              <FileText className="w-5 h-5 text-amber-300" />
+            )}
+            <div className="flex items-center gap-1.5">
+              <span>Gerar .DOCX</span>
+              <span className="text-[10px] bg-white/20 text-white font-bold px-1.5 py-0.5 rounded border border-white/30 uppercase tracking-tight">
+                Google Drive
               </span>
             </div>
           </button>
@@ -94,7 +115,7 @@ export default function ExportActions({ data, onShowToast }) {
             type="button"
             onClick={handleExportPdf}
             disabled={isBusy}
-            className="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-600 text-slate-900 font-heading font-bold text-sm rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2.5 disabled:opacity-50"
+            className="w-full sm:w-auto px-5 py-3 bg-amber-500 hover:bg-amber-600 text-slate-900 font-heading font-bold text-sm rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50"
             title="Baixar documento final em formato PDF"
           >
             {loadingPdf ? (
@@ -102,23 +123,7 @@ export default function ExportActions({ data, onShowToast }) {
             ) : (
               <FileDown className="w-5 h-5 text-slate-900" />
             )}
-            <span>Gerar Documento .PDF</span>
-          </button>
-
-          {/* Secondary DOCX (Modern Word) option */}
-          <button
-            type="button"
-            onClick={handleExportDocx}
-            disabled={isBusy}
-            className="w-full sm:w-auto px-3.5 py-3 bg-white/10 hover:bg-white/20 text-white font-medium text-xs rounded-xl border border-white/20 transition flex items-center justify-center gap-1.5 disabled:opacity-50"
-            title="Exportar no formato alternativo Word Moderno (.docx)"
-          >
-            {loadingDocx ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <FileText className="w-3.5 h-3.5 opacity-80" />
-            )}
-            <span>Opção .DOCX</span>
+            <span>Gerar .PDF</span>
           </button>
         </div>
       </div>

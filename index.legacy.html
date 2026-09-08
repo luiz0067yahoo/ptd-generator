@@ -2278,7 +2278,7 @@ Retorne EXCLUSIVAMENTE um JSON estrito (sem markdown exterior, sem explicações
         const data = getFormData();
         const boundary = '----=_NextPart_PTD_SENAC_2003';
 
-        const htmlContent = `
+const htmlContent = `<!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -2382,7 +2382,7 @@ td.ptd-cell {
   <table class="header-table" cellpadding="0" cellspacing="0">
     <tr>
       <td align="left" style="width: 50%;">
-        <img src="logo_senac.png" width="155" height="31" alt="Senac" style="width: 155px; height: 31px; border: 0;" />
+        <img src="data:image/png;base64,${cleanBase64}" width="155" height="31" alt="Senac" style="width: 155px; height: 31px; border: 0;" />
       </td>
       <td align="right" style="width: 50%; font-size: 9pt; color: #64748b; font-family: Arial, sans-serif;">
         Educação Profissional Técnica de Nível Médio
@@ -2525,28 +2525,6 @@ td.ptd-cell {
 </html>`.trim();
 
         const cleanBase64 = SENAC_LOGO_BASE64.replace(/\s+/g, '');
-        const mhtmlDoc = [
-          'MIME-Version: 1.0',
-          `Content-Type: multipart/related; boundary="${boundary}"`,
-          '',
-          `--${boundary}`,
-          'Content-Type: text/html; charset="utf-8"',
-          'Content-Transfer-Encoding: 8bit',
-          '',
-          htmlContent,
-          '',
-          `--${boundary}`,
-          'Content-Type: image/png',
-          'Content-Transfer-Encoding: base64',
-          'Content-Location: logo_senac.png',
-          'Content-ID: <logo_senac.png>',
-          '',
-          cleanBase64,
-          '',
-          `--${boundary}--`,
-          ''
-        ].join('\r\n');
-
         const cursoClean = (data.curso || 'Curso').trim();
         const ucClean = (data.uc || '').trim();
         let baseDocName = `PTD ${cursoClean}`;
@@ -2554,7 +2532,7 @@ td.ptd-cell {
           baseDocName += ucClean.startsWith('-') ? ` ${ucClean}` : ` - ${ucClean}`;
         }
         const fileName = `${baseDocName}.doc`.replace(/[\\/:*?"<>|]/g, '');
-        const blob = new Blob([mhtmlDoc], { type: 'application/msword;charset=utf-8' });
+        const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

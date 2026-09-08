@@ -1,7 +1,7 @@
 import React from 'react';
 import { Info, Sparkles } from 'lucide-react';
 
-export default function Step1Identificacao({ data, onChange, onOpenFullAiModal }) {
+export default function Step1Identificacao({ data, onChange, onOpenFullAiModal, onLoadPreset }) {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3 mb-2">
@@ -11,6 +11,74 @@ export default function Step1Identificacao({ data, onChange, onOpenFullAiModal }
         <div>
           <h3 className="text-xl font-heading font-bold text-slate-900">Identificação Básica</h3>
           <p className="text-sm text-slate-500">Informe os dados gerais do curso técnico e do corpo docente.</p>
+        </div>
+      </div>
+
+      {/* Modelos Prontos Oficiais Senac */}
+      <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 mb-4 shadow-sm">
+        <div className="flex items-center justify-between gap-2 mb-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-base">📋</span>
+            <h4 className="font-heading font-bold text-xs sm:text-sm text-slate-800">
+              Carregar Modelo PTD Oficial Pronto
+            </h4>
+          </div>
+          <span className="text-[10px] text-slate-500 font-medium hidden sm:inline">
+            Clique para preencher todas as 12 etapas instantaneamente
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+          <button
+            type="button"
+            onClick={() => onLoadPreset && onLoadPreset('excel')}
+            className="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100/80 text-left transition flex flex-col justify-between group shadow-sm"
+            title="Carregar modelo oficial extraído de Excel Recursos Avançados"
+          >
+            <div className="flex items-center justify-between w-full mb-1">
+              <span className="text-base">📊</span>
+              <span className="bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">Novo</span>
+            </div>
+            <strong className="text-xs font-bold text-emerald-950 leading-tight group-hover:text-emerald-700">
+              Excel Recursos Avançados
+            </strong>
+            <span className="text-[10px] text-emerald-800/80 mt-0.5">Senac Toledo (15H)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onLoadPreset && onLoadPreset('ia')}
+            className="p-2.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50/60 text-left transition flex flex-col justify-between group shadow-sm"
+          >
+            <span className="text-base mb-1">🧠</span>
+            <strong className="text-xs font-bold text-slate-800 leading-tight group-hover:text-senac-blue">
+              Téc. em Inteligência Artificial
+            </strong>
+            <span className="text-[10px] text-slate-500 mt-0.5">Fundamentos de IA (32H)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onLoadPreset && onLoadPreset('ds')}
+            className="p-2.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50/60 text-left transition flex flex-col justify-between group shadow-sm"
+          >
+            <span className="text-base mb-1">💻</span>
+            <strong className="text-xs font-bold text-slate-800 leading-tight group-hover:text-senac-blue">
+              Téc. em Desenv. de Sistemas
+            </strong>
+            <span className="text-[10px] text-slate-500 mt-0.5">Aplicações Web (100H)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onLoadPreset && onLoadPreset('adm')}
+            className="p-2.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50/60 text-left transition flex flex-col justify-between group shadow-sm"
+          >
+            <span className="text-base mb-1">💼</span>
+            <strong className="text-xs font-bold text-slate-800 leading-tight group-hover:text-senac-blue">
+              Téc. em Administração
+            </strong>
+            <span className="text-[10px] text-slate-500 mt-0.5">Gestão Financeira (80H)</span>
+          </button>
         </div>
       </div>
 
