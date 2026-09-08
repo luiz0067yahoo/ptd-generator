@@ -8,14 +8,14 @@ export default function DocumentPreview({ data }) {
       <div className="flex items-center justify-between mb-3 text-white px-2">
         <div className="flex items-center gap-2 text-xs font-semibold">
           <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span>Pré-visualização Oficial Senac (Folha Paisagem A4)</span>
+          <span>Pré-visualização Oficial Senac (Folha Retrato A4)</span>
         </div>
         <span className="text-[11px] text-slate-300">
           Simulação fiel do documento .DOC (Word 97-2003) e .PDF
         </span>
       </div>
 
-      <div className="document-sheet-landscape">
+      <div className="document-sheet-portrait">
         {/* Header with Senac Logo */}
         <div className="flex items-center justify-between border-b pb-3 mb-4">
           <img 

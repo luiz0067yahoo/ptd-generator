@@ -1,95 +1,105 @@
-// Gerador de Documento PDF no Padrão Institucional Senac (Orientação Paisagem A4)
+// Gerador de Documento PDF no Padrão Institucional Senac (Orientação Sempre Retrato A4)
+// Baseado na estrutura e layout oficial de PTD_exemplo_official_senac.doc
 
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { SENAC_LOGO_BASE64 } from '../assets/logoSenac';
 
 export async function exportPdf(data) {
-  // A4 Landscape: 297mm x 210mm
+  // A4 Retrato (Portrait): 210mm x 297mm
   const doc = new jsPDF({
-    orientation: 'landscape',
+    orientation: 'portrait',
     unit: 'mm',
     format: 'a4'
   });
 
   const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
   const marginX = 14;
-  let startY = 12;
 
-  // Add Senac Logo Header
+  // 1. Logo Senac Oficial
   try {
-    const logoData = `data:image/png;base64,${SENAC_LOGO_BASE64}`;
-    doc.addImage(logoData, 'PNG', marginX, startY, 40, 8);
+    const cleanBase64 = (SENAC_LOGO_BASE64 || '').replace(/\s+/g, '');
+    const logoData = `data:image/png;base64,${cleanBase64}`;
+    doc.addImage(logoData, 'PNG', marginX, 8, 38, 7.6);
   } catch (e) {
     console.warn('Erro ao inserir logo no PDF:', e);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.text('SENAC', marginX, startY + 6);
+    doc.setFontSize(11);
+    doc.text('SENAC', marginX, 13);
   }
 
-  // Document Title
+  // 2. Subtítulo Institucional Superior Direito
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text('Educação Profissional Técnica de Nível Médio', pageWidth - marginX, 13, { align: 'right' });
+
+  // 3. Título Central
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.setTextColor(0, 0, 0);
-  doc.text('Plano de Trabalho Docente', pageWidth / 2, startY + 12, { align: 'center' });
+  doc.text('Plano de Trabalho Docente', pageWidth / 2, 20, { align: 'center' });
 
-  // TABLE 0: Identificação e Situação de Aprendizagem
+  // 4. TABELA 0: Identificação e Situação de Aprendizagem (2 colunas: 75% e 25% no Retrato)
   const table0Body = [
     [
-      { content: `Nome do curso:  ${data.curso || ''}`, colSpan: 2, styles: { fontStyle: 'bold' } }
+      { content: `Nome do curso:  ${data.curso || ''}`, colSpan: 2 }
     ],
     [
-      { content: `Instrutor:  ${data.instrutor || ''}`, colSpan: 2, styles: { fontStyle: 'bold' } }
+      { content: `Instrutor:  ${data.instrutor || ''}`, colSpan: 2 }
     ],
     [
-      { content: `Formato da aula:  ${data.formato || 'Presencial'}`, colSpan: 2, styles: { fontStyle: 'bold' } }
+      { content: `Formato da aula:  ${data.formato || 'Presencial'}`, colSpan: 2 }
     ],
     [
-      { content: `Unidade Curricular:  ${data.uc || ''}`, styles: { fontStyle: 'bold' } },
-      { content: `C.H da UC:  ${data.ch_uc || ''}`, styles: { fontStyle: 'bold' } }
+      { content: `Unidade Curricular:  ${data.uc || ''}` },
+      { content: `C.H da UC:  ${data.ch_uc || ''}` }
     ],
     [
       {
-        content: `SITUAÇÃO DE APRENDIZAGEM:\n${data.situacao_aprendizagem || ''}`,
-        colSpan: 2,
-        styles: { fontStyle: 'normal' }
+        content: `SITUAÇÃO DE APRENDIZAGEM:\n\n${data.situacao_aprendizagem || ''}`,
+        colSpan: 2
       }
     ],
     [
       {
-        content: `Indicador(es) trabalhados na Situação de Aprendizagem:\n${data.indicadores || ''}`,
-        styles: { fontStyle: 'normal' }
+        content: `Indicador(es) trabalhados na Situação de Aprendizagem:\n\n${data.indicadores || ''}`
       },
       {
-        content: `C.H da Situação de aprendizagem:\n${data.ch_situacao || ''}`,
-        styles: { fontStyle: 'bold' }
+        content: `C.H da Situação de aprendizagem:\n\n${data.ch_situacao || ''}`
       }
     ]
   ];
 
   autoTable(doc, {
-    startY: startY + 16,
+    startY: 24,
     margin: { left: marginX, right: marginX },
     theme: 'plain',
-    tableWidth: 'auto',
     styles: {
       font: 'helvetica',
-      fontSize: 8.5,
+      fontSize: 8,
       textColor: [30, 41, 59],
-      lineColor: [80, 80, 80],
+      lineColor: [68, 68, 68],
       lineWidth: 0.2,
-      cellPadding: 2.5,
+      cellPadding: 2,
       valign: 'top',
       overflow: 'linebreak'
     },
     columnStyles: {
-      0: { cellWidth: 200 },
-      1: { cellWidth: 69 }
+      0: { cellWidth: 136.5 }, // 75% de 182mm
+      1: { cellWidth: 45.5 }   // 25% de 182mm
+    },
+    didParseCell: (dataHook) => {
+      // Destaque nos campos de identificação principais
+      if (dataHook.row.index < 4) {
+        dataHook.cell.styles.fontStyle = 'bold';
+      }
     },
     body: table0Body
   });
 
-  // TABLE 1: Elementos, Metodologias, Momentos, Avaliação, Recursos, Referências
+  // 5. TABELA 1: Elementos, Metodologias, Avaliação, Recursos e Referências (3 colunas iguais)
   const table1Body = [
     [
       {
@@ -99,6 +109,7 @@ export async function exportPdf(data) {
           halign: 'center',
           fontStyle: 'bold',
           fillColor: [241, 245, 249],
+          textColor: [0, 0, 0],
           fontSize: 9
         }
       }
@@ -151,28 +162,42 @@ export async function exportPdf(data) {
   ];
 
   autoTable(doc, {
-    startY: doc.lastAutoTable.finalY + 4,
-    margin: { left: marginX, right: marginX, bottom: 12 },
+    startY: doc.lastAutoTable.finalY + 2,
+    margin: { left: marginX, right: marginX, bottom: 14 },
     theme: 'plain',
     styles: {
       font: 'helvetica',
-      fontSize: 8.5,
+      fontSize: 8,
       textColor: [30, 41, 59],
-      lineColor: [80, 80, 80],
+      lineColor: [68, 68, 68],
       lineWidth: 0.2,
-      cellPadding: 2.5,
+      cellPadding: 2,
       valign: 'top',
       overflow: 'linebreak'
     },
     columnStyles: {
-      0: { cellWidth: 89.6 },
-      1: { cellWidth: 89.6 },
-      2: { cellWidth: 89.8 }
+      0: { cellWidth: 60.66 },
+      1: { cellWidth: 60.66 },
+      2: { cellWidth: 60.68 }
     },
-    body: table1Body
+    body: table1Body,
+    didDrawPage: (dataHook) => {
+      // Rodapé institucional padronizado em todas as páginas (Retrato)
+      const pWidth = doc.internal.pageSize.getWidth();
+      const pHeight = doc.internal.pageSize.getHeight();
+      doc.setDrawColor(210, 215, 220);
+      doc.setLineWidth(0.2);
+      doc.line(marginX, pHeight - 10, pWidth - marginX, pHeight - 10);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(120, 130, 140);
+      doc.text('Senac • Plano de Trabalho Docente', marginX, pHeight - 6.5);
+      doc.text(`Página ${dataHook.pageNumber}`, pWidth - marginX, pHeight - 6.5, { align: 'right' });
+    }
   });
 
-  // File naming: "PTD " + Nome do curso + " - " + Unidade Curricular + ".pdf"
+  // Nomenclatura dinâmica: "PTD " + Nome do curso + " - " + Unidade Curricular + ".pdf"
   const cursoClean = (data.curso || 'Curso').trim();
   const ucClean = (data.uc || '').trim();
   let baseName = `PTD ${cursoClean}`;

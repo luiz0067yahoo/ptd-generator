@@ -1,4 +1,4 @@
-// Gerador de Documento Word (.doc) Compatível com Word 97-2003 e Google Drive (Padrão Institucional Senac - Orientação Paisagem A4)
+// Gerador de Documento Word (.doc) Compatível com Word 97-2003 e Google Drive (Padrão Institucional Senac - Orientação Sempre Retrato A4)
 
 import { SENAC_LOGO_BASE64 } from '../assets/logoSenac.js';
 
@@ -47,8 +47,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <![endif]-->
 <style>
 @page Section1 {
-  size: 841.9pt 595.3pt; /* A4 Paisagem (297mm x 210mm) */
-  mso-page-orientation: landscape;
+  size: 595.3pt 841.9pt; /* A4 Retrato (210mm x 297mm) */
+  mso-page-orientation: portrait;
   margin: 28.35pt 28.35pt 28.35pt 28.35pt; /* Margem de 1cm */
   mso-header-margin: 18pt;
   mso-footer-margin: 18pt;

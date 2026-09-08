@@ -69,7 +69,7 @@ export default function Step12ReferenciasConclusao({
         />
       </div>
 
-      {/* EXPORT ACTIONS (DOCX & PDF) */}
+      {/* EXPORT ACTIONS (DOC & PDF) */}
       <ExportActions data={data} onShowToast={onShowToast} />
 
       {/* DOCUMENT PREVIEW (VISUAL SIMULATION) */}
