@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -119,45 +119,45 @@ td.ptd-cell {
     <tr>
       <td colspan="2" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">Nome do curso:</span>
-        <span class="cell-content">Excel Recursos Avançados</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
     </tr>
     <tr>
       <td colspan="2" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">Instrutor:</span>
-        <span class="cell-content">Luiz Fernando Brogliatto Ferreira</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
     </tr>
     <tr>
       <td colspan="2" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">Formato da aula:</span>
-        <span class="cell-content">Presencial local Senac Toledo Sala 12</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
     </tr>
     <tr>
       <td class="ptd-cell" style="width: 75%;">
         <span class="cell-label">Unidade Curricular:</span>
-        <span class="cell-content">Funções básicas e avançadas do Excel</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
       <td class="ptd-cell" style="width: 25%;">
         <span class="cell-label">C.H da UC:</span>
-        <span class="cell-content">15H</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
     </tr>
     <tr>
       <td colspan="2" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">SITUAÇÃO DE APRENDIZAGEM:</span>
-        <div class="cell-content" style="margin-top: 2pt;">Os alunos serão desafiados a criar uma planilha complexa no Excel que simule um ambiente empresarial, contendo informações financeiras, dados de vendas, análises de desempenho e previsões futuras. A planilha servirá como ferramenta de suporte à tomada de decisões, possibilitando o uso de funções de data, texto, matemáticas e financeiras, bem como recursos avançados, como tabelas dinâmicas e macros.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td class="ptd-cell" style="width: 75%;">
         <span class="cell-label">Indicador(es) trabalhados na Situação de Aprendizagem:</span>
-        <div class="cell-content" style="margin-top: 2pt;">O aluno desenvolverá habilidades para aplicar funções de data, texto, matemáticas e financeiras, como também utilizará recursos de referência, formatação condicional, tabelas dinâmicas, macros, entre outros. Será capaz de vincular dados, criar formulários, proteger planilhas e células, aplicar filtros, usar hiperlinks e consolidar informações de diferentes planilhas. Ao final, o aluno estará apto a realizar análises complexas, projeções financeiras, automatizar tarefas e aplicar medidas de segurança e confidencialidade, tornando-se proficientes em recursos avançados do Excel.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 25%;">
         <span class="cell-label">C.H da Situação de aprendizagem:</span>
-        <span class="cell-content">22/04/2024 a 26/04/2024 – segunda à sexta – 19:00 as 22:00h (15 horas)</span>
+        <span class="cell-content">&nbsp;</span>
       </td>
     </tr>
   </table>
@@ -171,73 +171,73 @@ td.ptd-cell {
     <tr>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">Conhecimentos</span>
-        <div class="cell-content" style="margin-top: 2pt;">Funções de data, texto, matemáticas e financeiras no Excel;<br/>Recursos de referência, validação de dados e formatação condicional;<br/>Tabelas dinâmicas, gráficos dinâmicos e consolidação de informações de diferentes planilhas;<br/>Automação de rotinas de trabalho por meio de Macros;<br/>Medidas de segurança, proteção de células/planilhas e criação de formulários.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">Habilidades</span>
-        <div class="cell-content" style="margin-top: 2pt;">Aplicar funções avançadas na resolução de problemas e simulações empresariais complexas;<br/>Vincular dados e estruturar painéis analíticos através de tabelas dinâmicas;<br/>Criar formulários interativos, aplicar filtros e usar hiperlinks para consolidar dados;<br/>Automatizar tarefas repetitivas via macros e implementar políticas de proteção e confidencialidade.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.4%;">
         <span class="cell-label">Atitudes e valores</span>
-        <div class="cell-content" style="margin-top: 2pt;">Rigor técnico e precisão na manipulação e integridade de dados corporativos;<br/>Confidencialidade e ética no manuseio de informações e dados sensíveis;<br/>Colaboração efetiva no trabalho em equipe e compartilhamento de soluções;<br/>Atitude inovadora, proativa e sustentável na otimização de fluxos de trabalho.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td colspan="3" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">(4) Metodologias ativas:</span>
-        <div class="cell-content" style="margin-top: 2pt;">A metodologia ativa utilizada será a resolução de problemas com base em um cenário realista. Os alunos serão organizados em grupos e receberão um estudo de caso detalhado que descreve o contexto empresarial a ser simulado na planilha. Eles terão que trabalhar em conjunto para aplicar os conhecimentos aprendidos, pesquisar e explorar recursos avançados do Excel para criar a planilha solicitada.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">(5) Metodologias ativas: Ação inicial</span>
-        <div class="cell-content" style="margin-top: 2pt;">Os alunos receberão o estudo de caso, que apresentará os requisitos e informações para a criação da planilha empresarial no Excel. Eles serão orientados a identificar as principais necessidades do cenário, os dados que precisam ser coletados e as análises que devem ser realizadas. Nesse momento, será reforçada a importância das competências de domínio técnico-científico, visão crítica e atitude empreendedora, sustentável e colaborativa para alcançar os objetivos da situação de aprendizagem.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">(6) Metodologias ativas: Reflexão</span>
-        <div class="cell-content" style="margin-top: 2pt;">Os alunos trabalharão em seus grupos para criar a planilha no Excel, aplicando as diversas funções e recursos mencionados na Unidade Curricular. Eles serão incentivados a buscar soluções criativas e eficientes para lidar com os desafios apresentados no estudo de caso. Durante esse processo, o instrutor fornecerá orientações, responderá a questionamentos e promoverá discussões para estimular a reflexão e o aprofundamento dos conhecimentos.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.4%;">
         <span class="cell-label">(7) Metodologias ativas: Ação Final</span>
-        <div class="cell-content" style="margin-top: 2pt;">Ao final da atividade, cada grupo apresentará sua planilha empresarial e as análises realizadas para o restante da turma. Essa apresentação permitirá que os alunos compartilhem suas soluções e aprendizados, além de receberem feedback dos colegas e do instrutor. Essa ação final está diretamente relacionada ao desenvolvimento das competências previstas na Unidade Curricular.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">(8) Procedimento avaliativo: Ação inicial</span>
-        <div class="cell-content" style="margin-top: 2pt;">Diagnóstico inicial da compreensão do estudo de caso empresarial e planejamento das necessidades de coleta e estruturação dos dados na planilha.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.3%;">
         <span class="cell-label">Procedimento avaliativo: Reflexão</span>
-        <div class="cell-content" style="margin-top: 2pt;">Acompanhamento formativo contínuo durante a elaboração da planilha em grupo, observando a aplicação das funções avançadas, raciocínio analítico e cooperação mútua.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
       <td class="ptd-cell" style="width: 33.4%;">
         <span class="cell-label">Procedimento avaliativo: Ação Final</span>
-        <div class="cell-content" style="margin-top: 2pt;">Avaliação somativa da apresentação final das planilhas empresariais e análises realizadas, verificando a precisão técnica, qualidade e atendimento aos requisitos.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td colspan="3" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">(9) Instrumentos de avaliação:</span>
-        <div class="cell-content" style="margin-top: 2pt;">A avaliação será realizada de forma formativa e somativa. Durante o desenvolvimento da planilha, o instrutor observará a participação ativa dos alunos, sua habilidade para aplicar as funções e recursos abordados, a criatividade na resolução dos problemas e a capacidade de trabalhar em equipe. A apresentação final das planilhas e análises também será avaliada quanto à qualidade e ao cumprimento dos requisitos estabelecidos.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td colspan="3" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">(10) Marcas(s) Formativas(s) a serem trabalhadas:</span>
-        <div class="cell-content" style="margin-top: 2pt;">Domínio técnico-científico: Aplicação das funções e recursos avançados do Excel para criar soluções eficazes no contexto empresarial.<br/>Visão crítica: Análise reflexiva das informações e resultados obtidos na planilha, identificando pontos fortes e oportunidades de melhoria.<br/>Atitude empreendedora, sustentável e colaborativa: Trabalho em equipe, busca por inovação e consideração dos aspectos sustentáveis ao desenvolver a planilha.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td colspan="3" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">(11) Materiais/recursos tecnológicos:</span>
-        <div class="cell-content" style="margin-top: 2pt;">Computadores com o software Excel instalado para cada aluno ou grupo.<br/>Acesso à internet para pesquisa de informações adicionais, tutoriais e recursos de suporte.<br/>Projetor ou tela para apresentação das planilhas ao restante da turma.<br/>Material impresso ou digital contendo o estudo de caso e as orientações da situação de aprendizagem.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
     <tr>
       <td colspan="3" class="ptd-cell" style="width: 100%;">
         <span class="cell-label">REFERÊNCIAS:</span>
-        <div class="cell-content" style="margin-top: 2pt;">MICROSOFT. Documentação e suporte técnico do Microsoft Excel. Microsoft Learn, 2024. Disponível em: https://support.microsoft.com/excel. Acesso em: 22 abr. 2024.<br/>MANZANO, José Augusto N. G. Excel Avançado: recursos avançados para tomada de decisões. São Paulo: Érica, 2022.<br/>SENAC. Departamento Nacional. Informática: planilhas eletrônicas aplicadas à gestão empresarial. Rio de Janeiro: Senac, 2023.</div>
+        <div class="cell-content" style="margin-top: 2pt;">&nbsp;</div>
       </td>
     </tr>
   </table>
