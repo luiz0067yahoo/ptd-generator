@@ -40,7 +40,7 @@ export default function Step8ProcedimentosAvaliativos({ data, onChange, onSugges
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label htmlFor="proc_inicial" className="block text-sm font-semibold text-slate-700 mb-1">
-            Procedimento Avaliativo: Ação Inicial <span className="text-rose-500">*</span>
+            (8) Procedimento avaliativo: Ação inicial <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="proc_inicial"
@@ -55,7 +55,7 @@ export default function Step8ProcedimentosAvaliativos({ data, onChange, onSugges
 
         <div>
           <label htmlFor="proc_reflexao" className="block text-sm font-semibold text-slate-700 mb-1">
-            Procedimento Avaliativo: Reflexão <span className="text-rose-500">*</span>
+            Procedimento avaliativo: Reflexão <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="proc_reflexao"
@@ -70,7 +70,7 @@ export default function Step8ProcedimentosAvaliativos({ data, onChange, onSugges
 
         <div>
           <label htmlFor="proc_final" className="block text-sm font-semibold text-slate-700 mb-1">
-            Procedimento Avaliativo: Ação Final <span className="text-rose-500">*</span>
+            Procedimento avaliativo: Ação Final <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="proc_final"

@@ -24,7 +24,7 @@ export default function Step2UnidadeCurricular({ data, onChange }) {
       <div className="space-y-4">
         <div>
           <label htmlFor="uc" className="block text-sm font-semibold text-slate-700 mb-1">
-            Unidade Curricular (UC) <span className="text-rose-500">*</span>
+            Unidade Curricular: <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
@@ -32,17 +32,17 @@ export default function Step2UnidadeCurricular({ data, onChange }) {
             name="uc"
             value={data.uc}
             onChange={(e) => onChange('uc', e.target.value)}
-            placeholder="Ex: Evidenciar fundamentos e conceitos de Inteligência Artificial"
+            placeholder="Ex: Funções básicas e avançadas do Excel"
             className="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue focus:border-transparent outline-none transition"
           />
           <p className="text-xs text-slate-400 mt-1">
-            Exemplos: Desenvolver linguagem de programação Python, Administrar processos organizacionais, etc.
+            Exemplos: Funções básicas e avançadas do Excel, Desenvolver aplicações web, etc.
           </p>
         </div>
 
         <div>
           <label htmlFor="ch_uc" className="block text-sm font-semibold text-slate-700 mb-1">
-            Carga Horária (C.H) da UC <span className="text-rose-500">*</span>
+            C.H da UC: <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
@@ -50,7 +50,7 @@ export default function Step2UnidadeCurricular({ data, onChange }) {
             name="ch_uc"
             value={data.ch_uc}
             onChange={(e) => onChange('ch_uc', e.target.value)}
-            placeholder="Ex: 100H ou 32H"
+            placeholder="Ex: 15H, 32H ou 100H"
             className="w-full sm:w-64 px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue focus:border-transparent outline-none transition"
           />
         </div>

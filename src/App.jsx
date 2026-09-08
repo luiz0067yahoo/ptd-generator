@@ -164,15 +164,6 @@ export default function App() {
     setShowResetModal(true);
   };
 
-  const handleLoadPreset = (presetKey) => {
-    const preset = OFFLINE_PRESETS[presetKey];
-    if (preset) {
-      setFormData(preset);
-      showToast(`Modelo oficial "${preset.curso}" carregado com sucesso!`, 'success');
-      setCurrentStep(1);
-    }
-  };
-
   const executeReset = () => {
     setFormData(EMPTY_FORM_DATA);
     sessionStorage.removeItem('ptd_react_form');
@@ -314,7 +305,6 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
         setGeminiKey={handleSetGeminiKey}
         onResetForm={handleResetForm}
         onOpenFullAiModal={() => setShowFullAiModal(true)}
-        onLoadPreset={handleLoadPreset}
         autosaved={autosaved}
         onShowToast={showToast}
       />
@@ -337,7 +327,6 @@ Diretrizes: Responda em português brasileiro com rigor pedagógico do Modelo Pe
               data={formData}
               onChange={handleFieldChange}
               onOpenFullAiModal={() => setShowFullAiModal(true)}
-              onLoadPreset={handleLoadPreset}
             />
           )}
           {currentStep === 2 && (

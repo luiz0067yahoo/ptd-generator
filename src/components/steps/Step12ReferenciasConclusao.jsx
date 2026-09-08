@@ -52,7 +52,7 @@ export default function Step12ReferenciasConclusao({
       <div className="mb-6">
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="referencias" className="block text-sm font-semibold text-slate-700">
-            Lista de Referências Bibliográficas <span className="text-rose-500">*</span>
+            REFERÊNCIAS: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.referencias?.length || 0} caracteres

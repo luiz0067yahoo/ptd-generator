@@ -40,7 +40,7 @@ export default function Step3SituacaoAprendizagem({ data, onChange, onSuggest, l
       <div>
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="situacao_aprendizagem" className="block text-sm font-semibold text-slate-700">
-            Descrição Detalhada da Situação de Aprendizagem <span className="text-rose-500">*</span>
+            SITUAÇÃO DE APRENDIZAGEM: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.situacao_aprendizagem?.length || 0} caracteres

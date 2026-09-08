@@ -41,7 +41,7 @@ export default function Step4Indicadores({ data, onChange, onSuggest, loadingSug
         <div>
           <div className="flex items-center justify-between mb-1">
             <label htmlFor="indicadores" className="block text-sm font-semibold text-slate-700">
-              Indicador(es) trabalhados na Situação de Aprendizagem <span className="text-rose-500">*</span>
+              Indicador(es) trabalhados na Situação de Aprendizagem: <span className="text-rose-500">*</span>
             </label>
             <span className="text-xs text-slate-400">
               {data.indicadores?.length || 0} caracteres
@@ -53,14 +53,14 @@ export default function Step4Indicadores({ data, onChange, onSuggest, loadingSug
             value={data.indicadores}
             onChange={(e) => onChange('indicadores', e.target.value)}
             rows="6"
-            placeholder={`Ex:\nIdentifica conceitos e fundamentos de Inteligência Artificial. 8 H\nClassifica diferentes métodos, algoritmos e técnicas utilizadas em Inteligência Artificial. 8 H\nCompreende e utiliza resultados supervisionados e não supervisionados. 8 H`}
+            placeholder={`Ex:\nO aluno desenvolverá habilidades para aplicar funções de data, texto, matemáticas e financeiras...`}
             className="w-full px-3.5 py-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue focus:border-transparent outline-none transition"
           />
         </div>
 
         <div>
           <label htmlFor="ch_situacao" className="block text-sm font-semibold text-slate-700 mb-1">
-            C.H da Situação de Aprendizagem <span className="text-rose-500">*</span>
+            C.H da Situação de aprendizagem: <span className="text-rose-500">*</span>
           </label>
           <input
             type="text"
@@ -68,8 +68,8 @@ export default function Step4Indicadores({ data, onChange, onSuggest, loadingSug
             name="ch_situacao"
             value={data.ch_situacao}
             onChange={(e) => onChange('ch_situacao', e.target.value)}
-            placeholder="Ex: 32 horas"
-            className="w-full sm:w-64 px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue focus:border-transparent outline-none transition"
+            placeholder="Ex: 22/04/2024 a 26/04/2024 – segunda à sexta – 19:00 as 22:00h (15 horas)"
+            className="w-full sm:w-96 px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-senac-blue focus:border-transparent outline-none transition"
           />
         </div>
       </div>

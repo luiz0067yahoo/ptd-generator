@@ -41,7 +41,7 @@ export default function Step7MomentosDidaticos({ data, onChange, onSuggest, load
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label htmlFor="acao_inicial" className="block text-sm font-semibold text-slate-700 mb-1">
-            (5) Ação Inicial <span className="text-rose-500">*</span>
+            (5) Metodologias ativas: Ação inicial <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="acao_inicial"
@@ -56,7 +56,7 @@ export default function Step7MomentosDidaticos({ data, onChange, onSuggest, load
 
         <div>
           <label htmlFor="reflexao" className="block text-sm font-semibold text-slate-700 mb-1">
-            (6) Reflexão <span className="text-rose-500">*</span>
+            (6) Metodologias ativas: Reflexão <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="reflexao"
@@ -71,7 +71,7 @@ export default function Step7MomentosDidaticos({ data, onChange, onSuggest, load
 
         <div>
           <label htmlFor="acao_final" className="block text-sm font-semibold text-slate-700 mb-1">
-            (7) Ação Final <span className="text-rose-500">*</span>
+            (7) Metodologias ativas: Ação Final <span className="text-rose-500">*</span>
           </label>
           <textarea
             id="acao_final"

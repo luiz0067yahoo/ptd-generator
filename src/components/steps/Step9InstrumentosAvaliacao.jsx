@@ -40,7 +40,7 @@ export default function Step9InstrumentosAvaliacao({ data, onChange, onSuggest, 
       <div>
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="instrumentos_avaliacao" className="block text-sm font-semibold text-slate-700">
-            Instrumentos de Avaliação Utilizados <span className="text-rose-500">*</span>
+            (9) Instrumentos de avaliação: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.instrumentos_avaliacao?.length || 0} caracteres

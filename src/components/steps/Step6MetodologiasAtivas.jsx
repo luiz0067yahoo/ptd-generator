@@ -40,7 +40,7 @@ export default function Step6MetodologiasAtivas({ data, onChange, onSuggest, loa
       <div>
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="metodologias_ativas" className="block text-sm font-semibold text-slate-700">
-            Abordagem Metodológica Geral da UC <span className="text-rose-500">*</span>
+            (4) Metodologias ativas: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.metodologias_ativas?.length || 0} caracteres

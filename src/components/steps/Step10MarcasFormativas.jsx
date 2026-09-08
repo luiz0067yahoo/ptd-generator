@@ -85,7 +85,7 @@ export default function Step10MarcasFormativas({ data, onChange, onSuggest, load
       <div>
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="marcas_formativas" className="block text-sm font-semibold text-slate-700">
-            Marcas Formativas a serem trabalhadas <span className="text-rose-500">*</span>
+            (10) Marcas(s) Formativas(s) a serem trabalhadas: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.marcas_formativas?.length || 0} caracteres

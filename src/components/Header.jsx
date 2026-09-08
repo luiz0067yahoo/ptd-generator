@@ -13,10 +13,7 @@ import {
   Wifi, 
   Loader2, 
   CheckCircle2, 
-  AlertCircle,
-  BookOpen,
-  ChevronDown,
-  FileSpreadsheet
+  AlertCircle
 } from 'lucide-react';
 import { 
   testGeminiConnection, 
@@ -31,14 +28,12 @@ export default function Header({
   setGeminiKey,
   onResetForm,
   onOpenFullAiModal,
-  onLoadPreset,
   autosaved,
   onShowToast
 }) {
   const [showKeyDrawer, setShowKeyDrawer] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showTutorialModal, setShowTutorialModal] = useState(false);
-  const [showPresetsDropdown, setShowPresetsDropdown] = useState(false);
   const [tempKey, setTempKey] = useState(geminiKey || '');
   const [testingAi, setTestingAi] = useState(false);
   const [aiStatus, setAiStatus] = useState(null); // 'connected' | 'error' | null
@@ -166,122 +161,6 @@ export default function Header({
               <Trash2 className="w-3.5 h-3.5 text-rose-300" />
               <span className="hidden md:inline">Limpar</span>
             </button>
-
-            {/* Modelos Prontos Dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowPresetsDropdown(!showPresetsDropdown)}
-                className="bg-white/15 hover:bg-white/25 text-white text-xs font-medium px-3 py-1.5 rounded-lg border border-white/20 transition flex items-center gap-1.5 cursor-pointer"
-                title="Carregar modelos oficiais prontos do Senac"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-emerald-300" />
-                <span className="hidden sm:inline">Modelos</span>
-                <ChevronDown className="w-3 h-3 text-slate-300" />
-              </button>
-
-              {showPresetsDropdown && (
-                <>
-                  <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setShowPresetsDropdown(false)} 
-                  />
-                  <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 p-2 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                        Modelos Oficiais Senac
-                      </span>
-                      <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">
-                        Pronto para Edição
-                      </span>
-                    </div>
-
-                    <div className="py-1 space-y-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onLoadPreset) onLoadPreset('excel');
-                          setShowPresetsDropdown(false);
-                        }}
-                        className="w-full text-left p-2.5 rounded-lg hover:bg-emerald-50/80 transition flex items-start gap-2.5 group"
-                      >
-                        <span className="text-lg">📊</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <strong className="text-xs text-slate-900 group-hover:text-emerald-700 truncate">
-                              Excel Recursos Avançados
-                            </strong>
-                            <span className="bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase">
-                              Novo
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 truncate">
-                            Funções básicas e avançadas • 15 Horas
-                          </p>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onLoadPreset) onLoadPreset('ia');
-                          setShowPresetsDropdown(false);
-                        }}
-                        className="w-full text-left p-2.5 rounded-lg hover:bg-blue-50 transition flex items-start gap-2.5 group"
-                      >
-                        <span className="text-lg">🧠</span>
-                        <div className="flex-1 min-w-0">
-                          <strong className="text-xs text-slate-900 group-hover:text-senac-blue truncate block">
-                            Téc. Inteligência Artificial
-                          </strong>
-                          <p className="text-[11px] text-slate-500 truncate">
-                            Fundamentos e conceitos de IA • 32 Horas
-                          </p>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onLoadPreset) onLoadPreset('ds');
-                          setShowPresetsDropdown(false);
-                        }}
-                        className="w-full text-left p-2.5 rounded-lg hover:bg-blue-50 transition flex items-start gap-2.5 group"
-                      >
-                        <span className="text-lg">💻</span>
-                        <div className="flex-1 min-w-0">
-                          <strong className="text-xs text-slate-900 group-hover:text-senac-blue truncate block">
-                            Téc. Desenvolvimento de Sistemas
-                          </strong>
-                          <p className="text-[11px] text-slate-500 truncate">
-                            Aplicações web interativas • 100 Horas
-                          </p>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onLoadPreset) onLoadPreset('adm');
-                          setShowPresetsDropdown(false);
-                        }}
-                        className="w-full text-left p-2.5 rounded-lg hover:bg-blue-50 transition flex items-start gap-2.5 group"
-                      >
-                        <span className="text-lg">💼</span>
-                        <div className="flex-1 min-w-0">
-                          <strong className="text-xs text-slate-900 group-hover:text-senac-blue truncate block">
-                            Téc. em Administração
-                          </strong>
-                          <p className="text-[11px] text-slate-500 truncate">
-                            Gestão operacional e financeira • 80 Horas
-                          </p>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
 
             {/* Gerar Tudo com IA Button */}
             <button

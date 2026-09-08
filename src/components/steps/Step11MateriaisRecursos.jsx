@@ -40,7 +40,7 @@ export default function Step11MateriaisRecursos({ data, onChange, onSuggest, loa
       <div>
         <div className="flex items-center justify-between mb-1">
           <label htmlFor="materiais_tecnologicos" className="block text-sm font-semibold text-slate-700">
-            Materiais e Recursos Tecnológicos <span className="text-rose-500">*</span>
+            (11) Materiais/recursos tecnológicos: <span className="text-rose-500">*</span>
           </label>
           <span className="text-xs text-slate-400">
             {data.materiais_tecnologicos?.length || 0} caracteres

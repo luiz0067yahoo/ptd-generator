@@ -4,17 +4,17 @@ import '../styles/wizard.css';
 
 export const STEPS_META = [
   { id: 1, title: 'Identificação Básica' },
-  { id: 2, title: 'Unidade Curricular' },
-  { id: 3, title: '(1) Situação de Aprendizagem' },
-  { id: 4, title: '(2) Indicadores e C.H' },
+  { id: 2, title: 'Unidade Curricular & C.H' },
+  { id: 3, title: 'Situação de Aprendizagem' },
+  { id: 4, title: 'Indicadores & C.H' },
   { id: 5, title: '(3) Elementos da Competência' },
-  { id: 6, title: '(4) Metodologias Ativas' },
-  { id: 7, title: 'Momentos Didáticos' },
-  { id: 8, title: 'Procedimentos Avaliativos' },
-  { id: 9, title: '(9) Instrumentos de Avaliação' },
+  { id: 6, title: '(4) Metodologias ativas' },
+  { id: 7, title: '(5, 6, 7) Ação Inicial, Reflexão e Final' },
+  { id: 8, title: '(8) Procedimentos avaliativos' },
+  { id: 9, title: '(9) Instrumentos de avaliação' },
   { id: 10, title: '(10) Marcas Formativas' },
-  { id: 11, title: '(11) Materiais e Recursos' },
-  { id: 12, title: 'Referências e Exportação' }
+  { id: 11, title: '(11) Materiais/recursos' },
+  { id: 12, title: 'REFERÊNCIAS & Exportação' }
 ];
 
 export default function StepNavigator({ currentStep, onGoToStep }) {
