@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { SENAC_LOGO_BASE64 } from '../assets/logoSenac';
-import { 
-  Key, 
-  Eye, 
-  EyeOff, 
-  Trash2, 
-  Sparkles, 
-  Check, 
-  ExternalLink, 
-  HelpCircle, 
-  X, 
-  Wifi, 
-  Loader2, 
-  CheckCircle2, 
+import {
+  Key,
+  Eye,
+  EyeOff,
+  Trash2,
+  Sparkles,
+  Check,
+  ExternalLink,
+  HelpCircle,
+  X,
+  Wifi,
+  Loader2,
+  CheckCircle2,
   AlertCircle
 } from 'lucide-react';
-import { 
-  testGeminiConnection, 
-  SUPPORTED_MODELS, 
-  getSelectedModel, 
-  setSelectedModel as saveSelectedModel, 
-  getLastSuccessfulModel 
+import {
+  testGeminiConnection,
+  SUPPORTED_MODELS,
+  getSelectedModel,
+  setSelectedModel as saveSelectedModel,
+  getLastSuccessfulModel
 } from '../services/geminiService';
 
 export default function Header({
@@ -76,7 +76,7 @@ export default function Header({
       setAiStatus('connected');
       const used = response.usedModel || getLastSuccessfulModel();
       setActiveModelName(used);
-      
+
       if (response.availableModels && response.availableModels.length > 0) {
         setModelList([
           { id: 'auto', name: '⚡ Automático (Recomendado)' },
@@ -113,14 +113,14 @@ export default function Header({
     <>
       <header className="bg-gradient-to-r from-senac-navy to-senac-blue text-white shadow-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
-          
+
           {/* Logo & Title */}
           <div className="flex items-center gap-3">
             <div className="bg-white p-1.5 rounded-lg shadow-sm flex items-center justify-center">
-              <img 
-                src={`data:image/png;base64,${SENAC_LOGO_BASE64}`} 
-                alt="Senac" 
-                className="h-8 sm:h-9 w-auto object-contain" 
+              <img
+                src={`data:image/png;base64,${SENAC_LOGO_BASE64}`}
+                alt="Senac"
+                className="h-8 sm:h-9 w-auto object-contain"
               />
             </div>
             <div>
@@ -141,10 +141,9 @@ export default function Header({
           {/* Quick Actions */}
           <div className="flex items-center gap-2 sm:gap-3 ml-auto">
             {/* Autosave Status */}
-            <div 
-              className={`flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs text-emerald-300 border border-white/10 transition-opacity ${
-                autosaved ? 'opacity-100' : 'opacity-70'
-              }`}
+            <div
+              className={`flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs text-emerald-300 border border-white/10 transition-opacity ${autosaved ? 'opacity-100' : 'opacity-70'
+                }`}
               title="Salvo automaticamente na sessão"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-subtle"></span>
@@ -333,7 +332,7 @@ export default function Header({
 
             {/* Steps */}
             <div className="space-y-4 text-xs text-slate-600 max-h-[65vh] overflow-y-auto pr-1.5">
-              
+
               {/* Passo 1 */}
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-start gap-3">
@@ -357,9 +356,9 @@ export default function Header({
                   </div>
                 </div>
                 <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
-                  <img 
-                    src="/tutorial/step2_terms.png" 
-                    alt="Tela de Termos do Google AI Studio" 
+                  <img
+                    src="./tutorial/step2_terms.png"
+                    alt="Tela de Termos do Google AI Studio"
                     className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
                     loading="lazy"
                   />
@@ -380,9 +379,9 @@ export default function Header({
                   </div>
                 </div>
                 <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
-                  <img 
-                    src="/tutorial/step3_dashboard.png" 
-                    alt="Botão Create API Key no Painel" 
+                  <img
+                    src="./tutorial/step3_dashboard.png"
+                    alt="Botão Create API Key no Painel"
                     className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
                     loading="lazy"
                   />
@@ -406,9 +405,9 @@ export default function Header({
                   </div>
                 </div>
                 <div className="rounded-lg overflow-hidden border border-amber-200 shadow-sm bg-white">
-                  <img 
-                    src="/tutorial/step4_create_modal.png" 
-                    alt="Janela Create a new key" 
+                  <img
+                    src="./tutorial/step4_create_modal.png"
+                    alt="Janela Create a new key"
                     className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
                     loading="lazy"
                   />
@@ -429,9 +428,9 @@ export default function Header({
                   </div>
                 </div>
                 <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
-                  <img 
-                    src="/tutorial/step5_key_details.png" 
-                    alt="Janela com o botão Copy Key" 
+                  <img
+                    src="./tutorial/step5_key_details.png"
+                    alt="Janela com o botão Copy Key"
                     className="w-full h-auto max-h-44 object-cover object-top hover:max-h-none transition-all duration-300"
                     loading="lazy"
                   />
