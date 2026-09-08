@@ -8,6 +8,13 @@
     <link rel="icon" type="image/png" href="/logo-senac.png" />
   </head>
   <body class="min-h-full flex flex-col font-sans text-slate-800 bg-slate-50 antialiased selection:bg-orange-500 selection:text-white">
+    <script>
+      // Redirecionamento automático no GitHub Pages para a pasta /dist/
+      if (window.location.hostname.includes('github.io') && !window.location.pathname.includes('/dist')) {
+        var cleanPath = window.location.pathname.replace(/\/+$/, '');
+        window.location.replace(cleanPath + '/dist/');
+      }
+    </script>
     <div id="root" class="min-h-full flex flex-col"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
