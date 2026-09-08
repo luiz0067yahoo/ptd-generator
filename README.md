@@ -26,7 +26,7 @@ Pronta para publicação imediata e gratuita no **GitHub Pages**.
   - **Online com Google Gemini (Opcional):** Permite inserir sua chave da API do Google Gemini (`gemini-1.5-flash` / `gemini-2.5-flash`) de forma segura (salva apenas na sessão da aba).
   - **Offline Inteligente (Automático):** Caso a chave não seja informada ou haja instabilidade de conexão, o sistema aciona automaticamente o banco de dados pedagógico institucional do Senac com modelos completos de Cursos Técnicos (Inteligência Artificial, Desenvolvimento de Sistemas, Administração e sintetizador dinâmico universal).
 - **Persistência de Sessão Automática (`sessionStorage`):** Todos os dados digitados são gravados instantaneamente a cada tecla ou alteração de campo, evitando qualquer perda acidental de progresso ao atualizar a página.
-- **Exportação Fiel em `.docx`:** Geração em tempo real no próprio navegador via biblioteca `docx.js`, criando um documento Word em orientação paisagem (A4) com cabeçalho institucional (logo Senac), formatação de tabelas, bordas finas, alinhamento e tipografia Arial.
+- **Exportação Fiel em `.doc` (Word 97-2003):** Geração em tempo real no próprio navegador via padrão MHTML/WordML, criando um documento Word em orientação paisagem (A4) com cabeçalho institucional (logo Senac), formatação de tabelas, larguras, bordas e tipografia Arial, totalmente compatível com Microsoft Word 97-2003 e versões mais recentes, além de opção de exportação em PDF e .docx.
 - **Modelos Prontos:** Menu de seleção rápida para carregar instâncias completas de cursos oficiais (Técnico em IA, Desenvolvimento de Sistemas e Administração).
 
 ---

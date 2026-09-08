@@ -81,7 +81,7 @@ export default function Step12ReferenciasConclusao({
           </h4>
         </div>
         <p className="text-xs text-slate-500 mb-4">
-          Confira abaixo o layout oficial estruturado que será gerado nos arquivos .docx e .pdf.
+          Confira abaixo o layout oficial estruturado que será gerado nos arquivos .doc (compatível com Word 97-2003) e .pdf.
         </p>
 
         <DocumentPreview data={data} />

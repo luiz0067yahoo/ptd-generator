@@ -133,7 +133,7 @@ export default function Header({
                 </span>
               </div>
               <p className="text-xs text-slate-200 hidden sm:block">
-                Plano de Trabalho Docente com Assistência IA, Visualização e Exportação DOCX / PDF
+                Plano de Trabalho Docente com Assistência IA, Visualização e Exportação DOC (Word 97-2003) / PDF
               </p>
             </div>
           </div>

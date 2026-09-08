@@ -11,7 +11,7 @@ export default function DocumentPreview({ data }) {
           <span>Pré-visualização Oficial Senac (Folha Paisagem A4)</span>
         </div>
         <span className="text-[11px] text-slate-300">
-          Simulação fiel do documento .DOCX e .PDF
+          Simulação fiel do documento .DOC (Word 97-2003) e .PDF
         </span>
       </div>
 
