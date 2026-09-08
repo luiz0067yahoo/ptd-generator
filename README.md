@@ -36,7 +36,7 @@ Pronta para publicação imediata e gratuita no **GitHub Pages**.
 Como a aplicação é 100% estática (HTML, CSS e JavaScript puros), não é necessário instalar Node.js, Python ou servidor backend:
 
 1. Clone ou baixe este repositório.
-2. Dê um duplo clique no arquivo [`index.html`](file:///c:/Users/usuario/Documents/GitHub/ptd%20generator/index.html) para abri-lo em qualquer navegador (Chrome, Edge, Firefox, Safari).
+2. Dê um duplo clique no arquivo [`index.html`]([file:///c:/Users/usuario/Documents/GitHub/ptd%20generator](https://luiz0067yahoo.github.io/ptd-generator/dist/index.html) para abri-lo em qualquer navegador (Chrome, Edge, Firefox, Safari).
 
 ---
 
